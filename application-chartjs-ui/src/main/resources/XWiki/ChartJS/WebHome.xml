@@ -195,7 +195,6 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
     var dataSetBackgroundColors = palette('tol', data.datasets.length).map(function(hex) {
       return convertHex(hex, opacity);
     });
-    console.log(options.backgroundColors)
 
     data.datasets.forEach(function(dataSet, index) {
       if ((!dataSet.backgroundColor || dataSet.backgroundColor.length == 0)) {
@@ -246,6 +245,40 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
     b = parseInt(hex.substring(4,6), 16);
     return 'rgba(' + r + ',' + g + ',' + b + ',' + opacity + ')';
   };
+
+  // Removes 0 values from the datasets, from the corresponding colors and from the labels.
+  var removeZeros = function(data, options, type) {
+    if (options.removeZeros &amp;&amp; data.datasets.length == 1) {
+      var newLabels = [];
+
+      data.datasets.forEach(function(dataSet, index) {
+        var newData = [];
+        var newBackgroundColors = [];
+
+        dataSet.data.forEach(function(value, valueIndex) {
+          if (value != 0) {
+            newData.push(value);
+            newLabels.push(data.labels[valueIndex]);
+            if (chartTypesWithBackgroundColorPerDataSet.indexOf(type) &gt;= 0) {
+              if (options.backgroundColors) {
+                if (data.datasets.length == options.backgroundColors.length) {
+                  newBackgroundColors = options.backgroundColors;
+                } else {
+                  newBackgroundColors.push(options.backgroundColors[valueIndex]);
+                }
+              }
+            } else if (options.backgroundColors) {
+              newBackgroundColors.push(options.backgroundColors[valueIndex]);
+            }
+          }
+        });
+        dataSet.data = newData;
+        options.backgroundColors = newBackgroundColors;
+      });
+      data.labels = newLabels;
+    }
+    return data;
+  }
 
   var readDataFromTable = function(options) {
     var labels = [];
@@ -368,6 +401,8 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
 
     getData(canvas).then(function(data) {
       return configureColors(data, options, type);
+    }).done(function(data) {
+       return removeZeros(data, options, type);
     }).done(function(data) {
 
       if (!options.plugins) {
