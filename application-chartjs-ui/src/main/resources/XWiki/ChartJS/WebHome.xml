@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
  * See the NOTICE file distributed with this work for additional
  * information regarding copyright ownership.
@@ -154,7 +153,7 @@
     <property>
       <code>require.config({
   paths: {
-    chart: "$services.webjars.url('org.webjars.bower:chartjs', 'dist/Chart.bundle.min.js')",
+    chart: "$services.webjars.url('org.webjars:chartjs', 'Chart.bundle.min.js')",
     palette: "$services.webjars.url('org.xwiki.contrib:application-chartjs-webjar', 'palette.min.js')"
   },
   shim: {
