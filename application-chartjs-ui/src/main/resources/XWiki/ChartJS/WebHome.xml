@@ -405,6 +405,14 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
        return removeZeros(data, options, type);
     }).done(function(data) {
 
+      if (options.labelsMap) {
+        for (var i = 0; i &lt; data.labels.length; i++) {
+          if (options.labelsMap.hasOwnProperty(data.labels[i])) {
+            data.labels[i] = options.labelsMap[data.labels[i]]
+          }
+        }
+      }
+
       if (!options.plugins) {
         Chart.defaults.global.plugins.datalabels.display = false;
       }
