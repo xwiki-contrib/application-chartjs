@@ -154,7 +154,13 @@
       <code>require.config({
   paths: {
     chart: "$services.webjars.url('org.webjars:chartjs', 'Chart.bundle.min.js')",
+    datalabels: "$services.webjars.url('org.webjars.npm:chartjs-plugin-datalabels', 'dist/chartjs-plugin-datalabels.min.js')",
     palette: "$services.webjars.url('org.xwiki.contrib:application-chartjs-webjar', 'palette.min.js')"
+  },
+  map: {
+    datalabels: {
+      "chart.js": "chart"
+    }
   },
   shim: {
     palette: {
@@ -163,7 +169,7 @@
   }
 });
 
-require(['jquery', 'chart', 'palette'], function($, Chart, palette) {
+require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalabels, palette) {
   var getData = function(canvas) {
     var deferred = $.Deferred();
     var data;
@@ -320,6 +326,11 @@ require(['jquery', 'chart', 'palette'], function($, Chart, palette) {
     getData(canvas).then(function(data) {
       return configureData(data, type);
     }).done(function(data) {
+
+      if (!options.plugins) {
+        Chart.defaults.global.plugins.datalabels.display = false;
+      }
+
       new Chart(canvas, {
         type: type,
         data: data,

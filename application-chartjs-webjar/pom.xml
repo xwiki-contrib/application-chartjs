@@ -36,6 +36,12 @@
       <version>${chart.js.version}</version>
       <scope>runtime</scope>
     </dependency>
+    <dependency>
+      <groupId>org.webjars.npm</groupId>
+      <artifactId>chartjs-plugin-datalabels</artifactId>
+      <version>${chartjs-plugin-datalabels.version}</version>
+      <scope>runtime</scope>
+    </dependency>
   </dependencies>
   <build>
     <plugins>

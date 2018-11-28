@@ -49,6 +49,7 @@
   <properties>
     <xwiki.issueManagement.jira.id>CHARTJS</xwiki.issueManagement.jira.id>
     <chart.js.version>2.7.3</chart.js.version>
+    <chartjs-plugin-datalabels.version>0.4.0</chartjs-plugin-datalabels.version>
   </properties>
   <modules>
     <module>application-chartjs-ui</module>
