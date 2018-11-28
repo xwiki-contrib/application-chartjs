@@ -171,6 +171,8 @@
 });
 
 require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalabels, palette) {
+  var chartTypesWithBackgroundColorPerDataSet = ['line', 'bar', 'horizontalBar', 'radar'];
+
   var getData = function(canvas) {
     var deferred = $.Deferred();
     var data;
@@ -191,7 +193,7 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
   var configureColors = function(data, options, type) {
 
     var opacity = options.opacity ? options.opacity : 0.8;
-    var chartTypesWithBackgroundColorPerDataSet = ['line', 'bar', 'horizontalBar', 'radar'];
+    
     var dataSetBackgroundColors = palette('tol', data.datasets.length).map(function(hex) {
       return convertHex(hex, opacity);
     });
@@ -415,6 +417,34 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
 
       if (!options.plugins) {
         Chart.defaults.global.plugins.datalabels.display = false;
+      } else if (options.plugins.datalabels) {
+        Chart.defaults.global.plugins.datalabels.display = true;
+        options.plugins.datalabels.formatter = function(value, context) {
+          var text = context.chart.legend.legendItems[context.dataIndex].text;
+          // Replace double spaces by carriage return
+          text = text.replace('  ','\n');
+          if (options.percent) {
+            return text + '\n' + value + ' %';
+          }
+        }
+
+        options.tooltips = {
+          callbacks: {
+            title: function(tooltipItem, data) { return ''},
+            label: function(tooltipItem, data) {
+              var datasetIndex = tooltipItem.datasetIndex;
+              var index = tooltipItem.index;
+              var value = data.datasets[datasetIndex].data[index];
+              var label = data.labels[index];
+              label = label.replace('  ', ' ');
+              if (options.percent) {
+                return label + ' : '+ value + ' %';
+              } else {
+                return label + ' : '+ value;
+              }
+            }
+          }
+        }
       }
 
       new Chart(canvas, {
