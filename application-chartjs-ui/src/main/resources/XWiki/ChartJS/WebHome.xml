@@ -188,23 +188,55 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
     return deferred.promise();
   };
 
-  var chartTypesWithBackgroundColorPerDataSet = ['line', 'bar', 'horizontalBar', 'radar'];
-  var configureData = function(data, type) {
-    var opacity = (type === 'line' || type === 'radar') ? .5 : 1;
-    var dataSetBackgroundColor = palette('tol', data.datasets.length).map(function(hex) {
+  var configureColors = function(data, options, type) {
+
+    var opacity = options.opacity ? options.opacity : 0.8;
+    var chartTypesWithBackgroundColorPerDataSet = ['line', 'bar', 'horizontalBar', 'radar'];
+    var dataSetBackgroundColors = palette('tol', data.datasets.length).map(function(hex) {
       return convertHex(hex, opacity);
     });
+    console.log(options.backgroundColors)
+
     data.datasets.forEach(function(dataSet, index) {
-      if (chartTypesWithBackgroundColorPerDataSet.indexOf(type) &gt;= 0) {
-        // Background color per data set.
-        dataSet.backgroundColor = dataSetBackgroundColor[index];
+      if ((!dataSet.backgroundColor || dataSet.backgroundColor.length == 0)) {
+        if (chartTypesWithBackgroundColorPerDataSet.indexOf(type) &gt;= 0) {
+          if (options.backgroundColors) {
+            // Either one color per dataset or, if the number of datasets is the same as the number of colors, otherwise one color per value.
+            if (data.datasets.length == options.backgroundColors.length) {
+              // One color per dataset, from the options.
+              dataSet.backgroundColor = convertHex(options.backgroundColors[index].substring(1), opacity);
+            } else {
+              // One color per value, from the options.
+              dataSet.backgroundColor = options.backgroundColors.map(function(hex) {
+                return convertHex(hex.substring(1), opacity);
+              });
+            }
+          } else {
+            // One color per data set, generated with tol.
+            dataSet.backgroundColor = dataSetBackgroundColors[index];
+          }
+
+        } else {
+          if (options.backgroundColors) {
+            // One background color per value, from the options.
+            dataSet.backgroundColor = options.backgroundColors.map(function(hex) {
+              return convertHex(hex.substring(1), opacity);
+            });
+          } else {
+            // One background color per value, generated with the palette.
+            dataSet.backgroundColor = palette('tol', dataSet.data.length).map(function(hex) {
+                return convertHex(hex, opacity);
+              }
+            );
+          }
+        }
       } else {
-        // Background color per value.
-        dataSet.backgroundColor = palette('tol', dataSet.data.length).map(function(hex) {
-          return '#' + hex;
+        dataSet.backgroundColor = dataSet.backgroundColor.map(function(hex) {
+          return convertHex(hex, opacity);
         });
       }
     });
+
     return data;
   };
 
@@ -319,13 +351,23 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
   $('canvas.chart').each(function() {
     var canvas = $(this);
     var type = canvas.attr('data-type');
-    var options = {};
-    try {
-      options = JSON.parse(canvas.attr('data-options') || '{}');
-    } catch (exception) {
+
+    // Converts a JSON attribute value to a JavaScript object.
+    function jsonAttributeToObject(attributeName) {
+      var object = {};
+      try {
+        var json = canvas.attr(attributeName);
+        object = JSON.parse(json || '{}');
+      } catch (exception) {
+        console.log(exception)
+      }
+      return object;
     }
+
+    var options = jsonAttributeToObject('data-options');
+
     getData(canvas).then(function(data) {
-      return configureData(data, type);
+      return configureColors(data, options, type);
     }).done(function(data) {
 
       if (!options.plugins) {

@@ -50,10 +50,15 @@
 |New Feature|5
 
 {{velocity}}
+  #set($chartOptions = {
+    "backgroundColors": ["#ff16e8", "#0018f4"],
+    "opacity": 0.8})
+  #set ($options = $jsontool.serialize($chartOptions).replaceAll("~","~~").replaceAll("'","~'"))
+
 (% class="row" %)(((
   #foreach ($type in ['pie', 'doughnut', 'polarArea'])
     (% class="col-sm-6 col-md-4" %)(((
-      {{tableToChartJS type="$type" table="singleDataSet" /}}
+      {{tableToChartJS type="$type" table="singleDataSet" options='$options'/}}
     )))
   #end
 )))
@@ -69,11 +74,20 @@
 
 {{velocity}}
 (% class="row" %)(((
-  #foreach ($type in ['pie', 'doughnut', 'bar'])
+  #foreach ($type in ['pie', 'doughnut'])
     (% class="col-sm-6 col-md-4" %)(((
-      {{tableToChartJS type="$type" table="multipleDataSetsMerged" multipleDataSets="true" /}}
+      {{tableToChartJS type="$type" table="multipleDataSetsMerged" multipleDataSets="true" options='$options' /}}
     )))
   #end
+  #set($chartOptions = {
+    "backgroundColors": ["#15901c", "#ffe600"],
+    "opacity": 0.8})
+  #set ($options = $jsontool.serialize($chartOptions).replaceAll("~","~~").replaceAll("'","~'"))
+
+  (% class="col-sm-6 col-md-4" %)(((
+      {{tableToChartJS type="bar" table="multipleDataSetsMerged" multipleDataSets="true" options='$options' /}}
+  )))
+
 )))
 {{/velocity}}
 
