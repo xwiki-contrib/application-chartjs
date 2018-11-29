@@ -47,12 +47,33 @@
 |=Issue Type|=Count
 |Bug|23
 |Improvement|17
-|New Feature|5
+|New  Feature|9
+|Ideas|0
 
 {{velocity}}
-  #set($chartOptions = {
-    "backgroundColors": ["#ff16e8", "#0018f4"],
-    "opacity": 0.8})
+  #set ($chartOptions = {
+    "backgroundColors": ["#ff16e8", "#0018f4","#065d00"],
+    "opacity": 0.8,
+    "percent": false,
+    "removeZeros": true,
+    "legend": {
+      "display": false
+    },
+    "layout": {
+      "padding": {
+        "left": 30,
+        "right": 30,
+        "top": 30,
+        "bottom": 30
+      }
+    },
+    "plugins" : {
+      "datalabels": {
+        "anchor": "end",
+        "align": "end"
+      }
+    }
+  })
   #set ($options = $jsontool.serialize($chartOptions).replaceAll("~","~~").replaceAll("'","~'"))
 
 (% class="row" %)(((
@@ -66,11 +87,27 @@
 
 === Multiple Data Sets ===
 
+{{velocity}}
+  #set ($chartOptions = {
+    "backgroundColors": ["#ff16e8", "#0018f4","#065d00"],
+    "opacity": 0.8,
+    "percent": false,
+    "removeZeros": true,
+    "plugins" : {
+      "datalabels": {
+        "display": false
+      }
+    }
+  })
+  #set ($options = $jsontool.serialize($chartOptions).replaceAll("~","~~").replaceAll("'","~'"))
+{{/velocity}}
+
 (% id="multipleDataSetsMerged" %)
 |=Issue Type|=CKEditor|=Diagram
-|Bug|23|34
+|Bug|25|34
 |Improvement|17|11
 |New Feature|5|6
+|Ideas|0|0
 
 {{velocity}}
 (% class="row" %)(((
@@ -80,8 +117,10 @@
     )))
   #end
   #set($chartOptions = {
-    "backgroundColors": ["#15901c", "#ffe600"],
-    "opacity": 0.8})
+    "backgroundColors": ["#0079b6", "#ffe600"],
+    "opacity": 0.8,
+    "removeZeros": true
+  })
   #set ($options = $jsontool.serialize($chartOptions).replaceAll("~","~~").replaceAll("'","~'"))
 
   (% class="col-sm-6 col-md-4" %)(((

@@ -192,17 +192,18 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
 
   var configureColors = function(data, options, type) {
 
-    var opacity = options.opacity ? options.opacity : 0.8;
-    
+    var opacity = options.opacity || 0.8;
+
     var dataSetBackgroundColors = palette('tol', data.datasets.length).map(function(hex) {
       return convertHex(hex, opacity);
     });
 
     data.datasets.forEach(function(dataSet, index) {
-      if ((!dataSet.backgroundColor || dataSet.backgroundColor.length == 0)) {
+      if (!dataSet.backgroundColor || dataSet.backgroundColor.length == 0) {
         if (chartTypesWithBackgroundColorPerDataSet.indexOf(type) &gt;= 0) {
           if (options.backgroundColors) {
-            // Either one color per dataset or, if the number of datasets is the same as the number of colors, otherwise one color per value.
+            // Either one color per dataset or, if the number of datasets is the same as the number of
+            // colors, otherwise one color per value.
             if (data.datasets.length == options.backgroundColors.length) {
               // One color per dataset, from the options.
               dataSet.backgroundColor = convertHex(options.backgroundColors[index].substring(1), opacity);
@@ -248,28 +249,41 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
     return 'rgba(' + r + ',' + g + ',' + b + ',' + opacity + ')';
   };
 
-  // Removes 0 values from the datasets, from the corresponding colors and from the labels.
-  var removeZeros = function(data, options, type) {
-    if (options.removeZeros &amp;&amp; data.datasets.length == 1) {
-      var newLabels = [];
+  // Removes 0 values from the datasets, the corresponding colors and the labels.
+  var maybeRemoveZeros = function(data, options, type) {
+    if (options.removeZeros) {
+      // Compute the indices for which all datasets value is zero.
+      var zeroIndices = {}
+      data.datasets.forEach(function(dataSet, index) {
+        dataSet.data.forEach(function(value, valueIndex) {
+          var isZero = (zeroIndices[valueIndex] == undefined || zeroIndices[valueIndex]) &amp;&amp; (value == undefined || value == 0);
+          zeroIndices[valueIndex] = isZero;
+        });
+      });
 
+      var newLabels = [];
       data.datasets.forEach(function(dataSet, index) {
         var newData = [];
         var newBackgroundColors = [];
-
         dataSet.data.forEach(function(value, valueIndex) {
-          if (value != 0) {
+          if (!zeroIndices[valueIndex]) {
+            // Compute the new labels only once, i.e. for the first dataset.
+            if (index == 0) {
+              newLabels.push(data.labels[valueIndex]);
+            }
             newData.push(value);
-            newLabels.push(data.labels[valueIndex]);
             if (chartTypesWithBackgroundColorPerDataSet.indexOf(type) &gt;= 0) {
               if (options.backgroundColors) {
                 if (data.datasets.length == options.backgroundColors.length) {
+                  // One color per dataset
                   newBackgroundColors = options.backgroundColors;
                 } else {
+                  // One color per value, pick the one corresponding to the current valueIndex
                   newBackgroundColors.push(options.backgroundColors[valueIndex]);
                 }
               }
             } else if (options.backgroundColors) {
+              // One color per value, pick the one corresponding to the current valueIndex
               newBackgroundColors.push(options.backgroundColors[valueIndex]);
             }
           }
@@ -387,24 +401,18 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
     var canvas = $(this);
     var type = canvas.attr('data-type');
 
-    // Converts a JSON attribute value to a JavaScript object.
-    function jsonAttributeToObject(attributeName) {
-      var object = {};
-      try {
-        var json = canvas.attr(attributeName);
-        object = JSON.parse(json || '{}');
-      } catch (exception) {
-        console.log(exception)
-      }
-      return object;
+    var options = {};
+    try {
+      var json = canvas.attr('data-options');
+      options = JSON.parse(json || '{}');
+    } catch (exception) {
+      console.log(exception)
     }
-
-    var options = jsonAttributeToObject('data-options');
 
     getData(canvas).then(function(data) {
       return configureColors(data, options, type);
     }).done(function(data) {
-       return removeZeros(data, options, type);
+       return maybeRemoveZeros(data, options, type);
     }).done(function(data) {
 
       if (options.labelsMap) {
@@ -416,27 +424,41 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
       }
 
       if (!options.plugins) {
+        // In case there is no plugin in the options, we need to make sure that the datalabels library does not
+        // override the default behaviour of chartjs for displaying data labels.
         Chart.defaults.global.plugins.datalabels.display = false;
       } else if (options.plugins.datalabels) {
         Chart.defaults.global.plugins.datalabels.display = true;
         options.plugins.datalabels.formatter = function(value, context) {
           var text = context.chart.legend.legendItems[context.dataIndex].text;
-          // Replace double spaces by carriage return
-          text = text.replace('  ','\n');
+          // Convention: use double spaces in the input labels to represent a new line.
+          text = text.replace(/\s\s/gi,'\n');
           if (options.percent) {
-            return text + '\n' + value + ' %';
+            text = text + '\n' + value + ' %';
           }
+          return text;
         }
 
         options.tooltips = {
           callbacks: {
-            title: function(tooltipItem, data) { return ''},
+            title: function(tooltipItem, data) {
+              // Display a title only when there are multiple datasets
+              if (data.datasets.length &gt; 1) {
+                var datasetIndex = tooltipItem[0].datasetIndex;
+                var title = data.datasets[datasetIndex].label;
+                return title;
+              } else {
+                return '';
+              }
+            },
             label: function(tooltipItem, data) {
               var datasetIndex = tooltipItem.datasetIndex;
               var index = tooltipItem.index;
               var value = data.datasets[datasetIndex].data[index];
               var label = data.labels[index];
-              label = label.replace('  ', ' ');
+              // Convention: use double spaces in the input labels to represent a new line. Here
+              // we replace the double spaces by simple ones in tooltips.
+              label = label.replace(/\s\s/gi,' ');
               if (options.percent) {
                 return label + ' : '+ value + ' %';
               } else {
@@ -453,7 +475,8 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
         options: options
       });
 
-      // If the table is hidden, move it to the canvas element and show it, for accessibility purpose.
+      // If the table is hidden, move it to the canvas element and show it so that it can be read
+      // by screen readers (screen readers ignore hidden elements).
       var table = $('table#' + data.table);
       if (table.hasClass('hidden')) {
         table.appendTo(canvas);
