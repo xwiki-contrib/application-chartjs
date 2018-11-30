@@ -55,7 +55,7 @@
     "backgroundColors": ["#ff16e8", "#0018f4","#065d00"],
     "opacity": 0.8,
     "percent": false,
-    "removeZeros": true,
+    "skipZeros": true,
     "legend": {
       "display": false
     },
@@ -92,7 +92,7 @@
     "backgroundColors": ["#ff16e8", "#0018f4","#065d00"],
     "opacity": 0.8,
     "percent": false,
-    "removeZeros": true,
+    "skipZeros": true,
     "plugins" : {
       "datalabels": {
         "display": false
@@ -119,7 +119,7 @@
   #set($chartOptions = {
     "backgroundColors": ["#0079b6", "#ffe600"],
     "opacity": 0.8,
-    "removeZeros": true
+    "skipZeros": true
   })
   #set ($options = $jsontool.serialize($chartOptions).replaceAll("~","~~").replaceAll("'","~'"))
 

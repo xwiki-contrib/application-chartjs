@@ -250,8 +250,8 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
   };
 
   // Removes 0 values from the datasets, the corresponding colors and the labels.
-  var maybeRemoveZeros = function(data, options, type) {
-    if (options.removeZeros) {
+  var maybeSkipZeros = function(data, options, type) {
+    if (options.skipZeros) {
       // Compute the indices for which all datasets value is zero.
       var zeroIndices = {}
       data.datasets.forEach(function(dataSet, index) {
@@ -412,7 +412,7 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
     getData(canvas).then(function(data) {
       return configureColors(data, options, type);
     }).done(function(data) {
-       return maybeRemoveZeros(data, options, type);
+       return maybeSkipZeros(data, options, type);
     }).done(function(data) {
 
       if (options.labelsMap) {
