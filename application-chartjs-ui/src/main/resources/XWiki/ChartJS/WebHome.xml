@@ -234,7 +234,7 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
         }
       } else {
         dataSet.backgroundColor = dataSet.backgroundColor.map(function(hex) {
-          return convertHex(hex, opacity);
+          return convertHex(hex.substring(1), opacity);
         });
       }
     });
