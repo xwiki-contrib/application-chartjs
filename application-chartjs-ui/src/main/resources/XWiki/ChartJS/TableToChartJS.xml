@@ -79,7 +79,7 @@
 (% class="row" %)(((
   #foreach ($type in ['pie', 'doughnut', 'polarArea'])
     (% class="col-sm-6 col-md-4" %)(((
-      {{tableToChartJS type="$type" table="singleDataSet" options='$options' height="200px"/}}
+      {{tableToChartJS type="$type" table="singleDataSet" options='$options' height="200px" cssClass="my-chart"/}}
     )))
   #end
 )))
@@ -92,12 +92,7 @@
     "backgroundColors": ["#ff16e8", "#0018f4","#065d00"],
     "opacity": 0.8,
     "percent": false,
-    "skipZeros": true,
-    "plugins" : {
-      "datalabels": {
-        "display": false
-      }
-    }
+    "skipZeros": true
   })
   #set ($options = $jsontool.serialize($chartOptions).replaceAll("~","~~").replaceAll("'","~'"))
 {{/velocity}}
@@ -343,7 +338,7 @@
       <code>{{velocity}}
 #set ($multipleDataSets = $xcontext.macro.params.multipleDataSets == 'true')
 #set ($dataSetLabel = $mathtool.toInteger($xcontext.macro.params.dataSetLabel))
-{{chartjs type='$!xcontext.macro.params.type' options='$!xcontext.macro.params.options' width='$!xcontext.macro.params.width' height='$!xcontext.macro.params.height'}}
+{{chartjs type='$!xcontext.macro.params.type' options='$!xcontext.macro.params.options' width='$!xcontext.macro.params.width' height='$!xcontext.macro.params.height' cssClass='$!xcontext.macro.params.cssClass'}}
 $jsontool.serialize({
   'table': $xcontext.macro.params.table,
   'multipleDataSets': $multipleDataSets,
@@ -837,6 +832,72 @@ $jsontool.serialize({
     </property>
     <property>
       <name>height</name>
+    </property>
+  </object>
+  <object>
+    <name>XWiki.ChartJS.TableToChartJS</name>
+    <number>7</number>
+    <className>XWiki.WikiMacroParameterClass</className>
+    <guid>a59c0518-e86e-4ce8-b54f-ee423851724f</guid>
+    <class>
+      <name>XWiki.WikiMacroParameterClass</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <defaultValue>
+        <disabled>0</disabled>
+        <name>defaultValue</name>
+        <number>4</number>
+        <prettyName>Parameter default value</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </defaultValue>
+      <description>
+        <disabled>0</disabled>
+        <name>description</name>
+        <number>2</number>
+        <prettyName>Parameter description</prettyName>
+        <rows>5</rows>
+        <size>40</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </description>
+      <mandatory>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType>yesno</displayType>
+        <name>mandatory</name>
+        <number>3</number>
+        <prettyName>Parameter mandatory</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </mandatory>
+      <name>
+        <disabled>0</disabled>
+        <name>name</name>
+        <number>1</number>
+        <prettyName>Parameter name</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </name>
+    </class>
+    <property>
+      <defaultValue/>
+    </property>
+    <property>
+      <description>Additional CSS class to be added to the chart container.</description>
+    </property>
+    <property>
+      <mandatory>0</mandatory>
+    </property>
+    <property>
+      <name>cssClass</name>
     </property>
   </object>
 </xwikidoc>
