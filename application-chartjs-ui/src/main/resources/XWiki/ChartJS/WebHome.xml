@@ -42,7 +42,7 @@
   <content>== Examples ==
 
 {{velocity filter="none"}}
-#set ($code = '{{chartjs type="pie"}}
+#set ($horizontalBarCode = '{{chartjs type="horizontalBar"}}
 {
   "labels": [
     "Bug",
@@ -50,23 +50,92 @@
     "New Feature"
   ],
   "datasets": [{
+    "label": "CKEditor",
+    "data": [23, 17, 5],
+    "backgroundColor": "#ff16e8"
+  }, {
+    "label": "Diagram",
+    "data": [34, 11, 6],
+    "backgroundColor": "#0018f4"
+  }]
+}
+{{/chartjs}}')
+
+#set ($pieSingleDataSetCode = '{{chartjs type="pie"
+  options="{~"backgroundColors~": [~"#ff16e8~", ~"#0018f4~",~"#065d00~"],
+            ~"legend~": {~"display~": false},
+            ~"layout~": {
+            ~"padding~": {
+              ~"left~": 50,
+              ~"right~": 50,
+              ~"top~": 50,
+              ~"bottom~": 50
+              }
+            },
+            ~"plugins~": {~"datalabels~":
+            {~"anchor~":~"end~", ~"align~": ~"end~"}}}"}}
+{
+  "labels": [
+    "Bug",
+    "Improvement",
+    "New Feature"
+  ],
+  "datasets": [{
+    "label": "CKEditor",
+    "data": [23, 17, 5]
+  }]
+}
+{{/chartjs}}')
+
+#set ($pieMultipleDataSetsCode = '{{chartjs type="pie"
+  options="{~"backgroundColors~": [~"#ff16e8~", ~"#0018f4~",~"#065d00~"]}"}}
+{
+  "labels": [
+    "Bug",
+    "Improvement",
+    "New Feature"
+  ],
+  "datasets": [{
+    "label": "CKEditor",
     "data": [23, 17, 5]
   }, {
+    "label": "Diagram",
     "data": [34, 11, 6]
   }]
 }
 {{/chartjs}}')
+
 {{/velocity}}
 
 {{velocity}}
 (% class="row" %)(((
   (% class="col-xs-12 col-sm-6 col-md-7" %)(((
     {{code language="none"}}
-    $code
+    $horizontalBarCode
     {{/code}}
   )))
   (% class="col-xs-12 col-sm-6 col-md-5" %)(((
-    $code
+    $horizontalBarCode
+  )))
+)))
+(% class="row" %)(((
+  (% class="col-xs-12 col-sm-6 col-md-7" %)(((
+    {{code language="none"}}
+    $pieMultipleDataSetsCode
+    {{/code}}
+  )))
+  (% class="col-xs-12 col-sm-6 col-md-5" %)(((
+    $pieMultipleDataSetsCode
+  )))
+)))
+(% class="row" %)(((
+  (% class="col-xs-12 col-sm-6 col-md-7" %)(((
+    {{code language="none"}}
+    $pieSingleDataSetCode
+    {{/code}}
+  )))
+  (% class="col-xs-12 col-sm-6 col-md-5" %)(((
+    $pieSingleDataSetCode
   )))
 )))
 {{/velocity}}
@@ -429,6 +498,19 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
         }
       }
 
+      // Special tooltips for pies with multiple data sets
+      if ((type == "pie" || type == "doughnut") &amp;&amp; data.datasets.length &gt; 1) {
+        options.tooltips = {
+          callbacks: {
+            title: function(tooltipItem, data) {
+                var datasetIndex = tooltipItem[0].datasetIndex;
+                var title = data.datasets[datasetIndex].label;
+                return title;
+              }
+          }
+        }
+      }
+
       if (!options.plugins) {
         // In case there is no plugin in the options, we need to make sure that the datalabels library does not
         // override the default behaviour of chartjs for displaying data labels.
@@ -436,6 +518,7 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
       } else if (options.plugins.datalabels) {
         Chart.defaults.global.plugins.datalabels.display = true;
         options.plugins.datalabels.formatter = function(value, context) {
+          // Special formatter handling multiple lines and percents
           var text = context.chart.legend.legendItems[context.dataIndex].text;
           // Convention: use double spaces in the input labels to represent a new line.
           text = text.replace(/\s\s/gi,'\n');
@@ -447,16 +530,6 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
 
         options.tooltips = {
           callbacks: {
-            title: function(tooltipItem, data) {
-              // Display a title only when there are multiple datasets
-              if (data.datasets.length &gt; 1) {
-                var datasetIndex = tooltipItem[0].datasetIndex;
-                var title = data.datasets[datasetIndex].label;
-                return title;
-              } else {
-                return '';
-              }
-            },
             label: function(tooltipItem, data) {
               var datasetIndex = tooltipItem.datasetIndex;
               var index = tooltipItem.index;
