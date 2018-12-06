@@ -47,13 +47,39 @@
 |=Issue Type|=Count
 |Bug|23
 |Improvement|17
-|New Feature|5
+|New  Feature|9
+|Ideas|0
 
 {{velocity}}
+  #set ($chartOptions = {
+    "backgroundColors": ["#ff16e8", "#0018f4","#065d00"],
+    "opacity": 0.8,
+    "percent": false,
+    "skipZeros": true,
+    "legend": {
+      "display": false
+    },
+    "layout": {
+      "padding": {
+        "left": 30,
+        "right": 30,
+        "top": 30,
+        "bottom": 30
+      }
+    },
+    "plugins" : {
+      "datalabels": {
+        "anchor": "end",
+        "align": "end"
+      }
+    }
+  })
+  #set ($options = $jsontool.serialize($chartOptions).replaceAll("~","~~").replaceAll("'","~'"))
+
 (% class="row" %)(((
   #foreach ($type in ['pie', 'doughnut', 'polarArea'])
     (% class="col-sm-6 col-md-4" %)(((
-      {{tableToChartJS type="$type" table="singleDataSet" /}}
+      {{tableToChartJS type="$type" table="singleDataSet" options='$options'/}}
     )))
   #end
 )))
@@ -61,19 +87,46 @@
 
 === Multiple Data Sets ===
 
+{{velocity}}
+  #set ($chartOptions = {
+    "backgroundColors": ["#ff16e8", "#0018f4","#065d00"],
+    "opacity": 0.8,
+    "percent": false,
+    "skipZeros": true,
+    "plugins" : {
+      "datalabels": {
+        "display": false
+      }
+    }
+  })
+  #set ($options = $jsontool.serialize($chartOptions).replaceAll("~","~~").replaceAll("'","~'"))
+{{/velocity}}
+
 (% id="multipleDataSetsMerged" %)
 |=Issue Type|=CKEditor|=Diagram
-|Bug|23|34
+|Bug|25|34
 |Improvement|17|11
 |New Feature|5|6
+|Ideas|0|0
 
 {{velocity}}
 (% class="row" %)(((
-  #foreach ($type in ['pie', 'doughnut', 'bar'])
+  #foreach ($type in ['pie', 'doughnut'])
     (% class="col-sm-6 col-md-4" %)(((
-      {{tableToChartJS type="$type" table="multipleDataSetsMerged" multipleDataSets="true" /}}
+      {{tableToChartJS type="$type" table="multipleDataSetsMerged" multipleDataSets="true" options='$options' /}}
     )))
   #end
+  #set($chartOptions = {
+    "backgroundColors": ["#0079b6", "#ffe600"],
+    "opacity": 0.8,
+    "skipZeros": true
+  })
+  #set ($options = $jsontool.serialize($chartOptions).replaceAll("~","~~").replaceAll("'","~'"))
+
+  (% class="col-sm-6 col-md-4" %)(((
+      {{tableToChartJS type="bar" table="multipleDataSetsMerged" multipleDataSets="true" options='$options' /}}
+  )))
+
 )))
 {{/velocity}}
 

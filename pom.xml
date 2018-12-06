@@ -36,6 +36,9 @@
       <id>mflorea</id>
       <name>Marius Dumitru Florea</name>
     </developer>
+    <developer>
+      <id>slauriere</id>
+    </developer>
   </developers>
   <scm>
     <connection>scm:git:git://github.com/xwiki-contrib/application-chartjs.git</connection>
@@ -45,7 +48,8 @@
   </scm>
   <properties>
     <xwiki.issueManagement.jira.id>CHARTJS</xwiki.issueManagement.jira.id>
-    <chart.js.version>2.6.0</chart.js.version>
+    <chart.js.version>2.7.3</chart.js.version>
+    <chartjs-plugin-datalabels.version>0.4.0</chartjs-plugin-datalabels.version>
   </properties>
   <modules>
     <module>application-chartjs-ui</module>
