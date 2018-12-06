@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
  * See the NOTICE file distributed with this work for additional
  * information regarding copyright ownership.
@@ -498,7 +497,7 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
         }
       }
 
-      // Special tooltips for pies with multiple data sets
+      // Special tooltips for pies and doughnuts with multiple data sets
       if ((type == "pie" || type == "doughnut") &amp;&amp; data.datasets.length &gt; 1) {
         options.tooltips = {
           callbacks: {
@@ -517,15 +516,23 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
         Chart.defaults.global.plugins.datalabels.display = false;
       } else if (options.plugins.datalabels) {
         Chart.defaults.global.plugins.datalabels.display = true;
-        options.plugins.datalabels.formatter = function(value, context) {
-          // Special formatter handling multiple lines and percents
-          var text = context.chart.legend.legendItems[context.dataIndex].text;
-          // Convention: use double spaces in the input labels to represent a new line.
-          text = text.replace(/\s\s/gi,'\n');
-          if (options.percent) {
-            text = text + '\n' + value + ' %';
+        // Display custom datalabels text only for pies with single data set
+        if ((type == "pie"  || type == "doughnut") &amp;&amp; data.datasets.length == 1) {
+          options.plugins.datalabels.formatter = function(value, context) {
+            var legendItem = context.chart.legend.legendItems[context.dataIndex];
+            if (legendItem) {
+              var text = legendItem.text;
+              // Convention: use double spaces in the input labels to represent a new line.
+              text = text.replace(/\s\s/gi,'\n');
+              if (options.percent) {
+                text = text + '\n' + value + ' %';
+              } else {
+                text = text + '\n' + value;
+              }
+              return text;
+            }
+            return value;
           }
-          return text;
         }
 
         options.tooltips = {
