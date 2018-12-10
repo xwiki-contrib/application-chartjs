@@ -468,7 +468,8 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
     }
     return {
       labels: labels,
-      datasets: dataSets
+      datasets: dataSets,
+      table: options.table
     };
   };
 
