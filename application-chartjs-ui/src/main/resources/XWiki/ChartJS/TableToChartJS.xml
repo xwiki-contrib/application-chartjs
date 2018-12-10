@@ -47,7 +47,7 @@
 |=Issue Type|=Count
 |Bug|23
 |Improvement|17
-|New  Feature|9
+|New Feature|9
 |Ideas|0
 
 {{velocity}}
@@ -70,7 +70,8 @@
     "plugins" : {
       "datalabels": {
         "anchor": "end",
-        "align": "end"
+        "align": "end",
+        "includeLegend": true
       }
     }
   })
@@ -114,7 +115,14 @@
   #set($chartOptions = {
     "backgroundColors": ["#0079b6", "#ffe600"],
     "opacity": 0.8,
-    "skipZeros": true
+    "skipZeros": true,
+    "plugins" : {
+      "datalabels": {
+        "anchor": "end",
+        "align": "end",
+        "showLegend": true
+      }
+    }
   })
   #set ($options = $jsontool.serialize($chartOptions).replaceAll("~","~~").replaceAll("'","~'"))
 

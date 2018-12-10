@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!--
  * See the NOTICE file distributed with this work for additional
  * information regarding copyright ownership.
@@ -516,39 +517,34 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
         Chart.defaults.global.plugins.datalabels.display = false;
       } else if (options.plugins.datalabels) {
         Chart.defaults.global.plugins.datalabels.display = true;
-        // Display custom datalabels text only for pies with single data set
-        if ((type == "pie"  || type == "doughnut") &amp;&amp; data.datasets.length == 1) {
+        if (options.plugins.datalabels.includeLegend) {
           options.plugins.datalabels.formatter = function(value, context) {
             var legendItem = context.chart.legend.legendItems[context.dataIndex];
             if (legendItem) {
               var text = legendItem.text;
-              // Convention: use double spaces in the input labels to represent a new line.
-              text = text.replace(/\s\s/gi,'\n');
+              text = text + '\n' + value;
               if (options.percent) {
-                text = text + '\n' + value + ' %';
+                return text + ' %';
               } else {
-                text = text + '\n' + value;
+                return text;
               }
-              return text;
             }
             return value;
           }
-        }
 
-        options.tooltips = {
-          callbacks: {
-            label: function(tooltipItem, data) {
-              var datasetIndex = tooltipItem.datasetIndex;
-              var index = tooltipItem.index;
-              var value = data.datasets[datasetIndex].data[index];
-              var label = data.labels[index];
-              // Convention: use double spaces in the input labels to represent a new line. Here
-              // we replace the double spaces by simple ones in tooltips.
-              label = label.replace(/\s\s/gi,' ');
-              if (options.percent) {
-                return label + ' : '+ value + ' %';
-              } else {
-                return label + ' : '+ value;
+          options.tooltips = {
+            callbacks: {
+              label: function(tooltipItem, data) {
+                var datasetIndex = tooltipItem.datasetIndex;
+                var index = tooltipItem.index;
+                var value = data.datasets[datasetIndex].data[index];
+                var label = data.labels[index];
+                var text = label + ' : '+ value;
+                if (options.percent) {
+                  return text + ' %';
+                } else {
+                  return text;
+                }
               }
             }
           }
