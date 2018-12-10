@@ -47,7 +47,8 @@
 |=Issue Type|=Count
 |Bug|23
 |Improvement|17
-|New Feature|9
+|{{html}}New
+Feature{{/html}}|9
 |Ideas|0
 
 {{velocity}}
@@ -61,10 +62,10 @@
     },
     "layout": {
       "padding": {
-        "left": 30,
-        "right": 30,
-        "top": 30,
-        "bottom": 30
+        "left": 50,
+        "right": 50,
+        "top": 50,
+        "bottom": 50
       }
     },
     "plugins" : {
