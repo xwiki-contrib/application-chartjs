@@ -39,7 +39,32 @@
   <minorEdit>false</minorEdit>
   <syntaxId>xwiki/2.1</syntaxId>
   <hidden>true</hidden>
-  <content>== Examples ==
+  <content>== Description ==
+
+Creates various types of charts using [[Chart.js&gt;&gt;http://www.chartjs.org/]].
+
+== Usage ==
+
+{{code language="none"}}
+{{chartjs type="..." options="{...}"}}
+{
+  "labels": [...],
+  "datasets": [...]
+}
+{{/chartjs}}
+{{/code}}
+
+== Parameters ==
+
+{{velocity}}
+#set ($parameters = $doc.getObjects('XWiki.WikiMacroParameterClass'))
+|=Name|=Description|=Mandatory|=Default
+#foreach ($parameter in $parameters)
+|$parameter.getProperty('name').value|$parameter.description|$parameter.mandatory|$parameter.defaultValue
+#end
+{{/velocity}}
+
+== Examples ==
 
 {{velocity filter="none"}}
 #set ($horizontalBarCode = '{{chartjs type="horizontalBar"}}
@@ -62,18 +87,18 @@
 {{/chartjs}}')
 
 #set ($pieSingleDataSetCode = '{{chartjs type="pie"
-  options="{~"backgroundColors~": [~"#ff16e8~", ~"#0018f4~",~"#065d00~"],
-            ~"legend~": {~"display~": false},
-            ~"layout~": {
-            ~"padding~": {
-              ~"left~": 50,
-              ~"right~": 50,
-              ~"top~": 50,
-              ~"bottom~": 50
+  options=''{"backgroundColors": ["#ff16e8", "#0018f4","#065d00"],
+            "legend": {"display": false},
+            "layout": {
+            "padding": {
+              "left": 50,
+              "right": 50,
+              "top": 50,
+              "bottom": 50
               }
             },
-            ~"plugins~": {~"datalabels~":
-            {~"anchor~":~"end~", ~"align~": ~"end~", ~"includeLegend~":true}}}"}}
+            "plugins": {"datalabels":
+            {"anchor":"end", "align": "end", "includeLegend":true}}}''}}
 {
   "labels": [
     "Bug",
@@ -87,8 +112,7 @@
 }
 {{/chartjs}}')
 
-#set ($pieMultipleDataSetsCode = '{{chartjs type="pie"
-  options="{~"backgroundColors~": [~"#ff16e8~", ~"#0018f4~",~"#065d00~"]}"}}
+#set ($pieMultipleDataSetsCode = '{{chartjs type="pie" options="{~"backgroundColors~": [~"#ff16e8~", ~"#0018f4~", ~"#065d00~"]}"}}
 {
   "labels": [
     "Bug",
@@ -105,26 +129,27 @@
 }
 {{/chartjs}}')
 
-#set ($mirroredHistogramWithLongLabelsCode ='{{chartjs type="horizontalBar"
-  options="{~"backgroundColors~": [~"#ff16e8~", ~"#0018f4~",~"#065d00~"],
-            ~"legend~": {~"display~": false},
-            ~"scales~": {
-              ~"yAxes~": [{
-                ~"barThickness~": 20,
-                ~"maxBarThickness~": 20,
-                ~"ticks~": { ~"mirror~": true, ~"padding~": -5, ~"labelOffset~": -20, ~"fontColor~": ~"#000~", ~"fontSize~": 14}
-              }]
-            },
-            ~"tooltips~": {~"maxCharactersPerLine~": 50}
-        }"}}
+#set ($mirroredHistogramWithLongLabelsCode ='{{chartjs type="horizontalBar" options=''{
+  "backgroundColors": ["#ff16e8", "#0018f4","#065d00"],
+  "legend": {"display": false},
+  "scales": {
+    "yAxes": [{
+      "barThickness": 20,
+      "maxBarThickness": 20,
+      "ticks": { "mirror": true, "padding": -5, "labelOffset": -20, "fontColor": "#000", "fontSize": 14}
+    }]
+  },
+  "tooltips": {"maxCharactersPerLine": 50}
+}
+''}}
 {
   "labels": [
-    "Bug",
-    "This is a long label with many words, all of them cannot get displayed entirely within the current container on a usual screen.",
-    "New Feature"
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+    "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
   ],
   "datasets": [{
-    "label": "CKEditor",
+    "label": "Lorem ipsum",
     "data": [23, 17, 5]
   }]
 }
@@ -146,21 +171,21 @@
 (% class="row" %)(((
   (% class="col-xs-12 col-sm-6 col-md-7" %)(((
     {{code language="none"}}
-    $pieMultipleDataSetsCode
+    $pieSingleDataSetCode
     {{/code}}
   )))
   (% class="col-xs-12 col-sm-6 col-md-5" %)(((
-    $pieMultipleDataSetsCode
+    $pieSingleDataSetCode
   )))
 )))
 (% class="row" %)(((
   (% class="col-xs-12 col-sm-6 col-md-7" %)(((
     {{code language="none"}}
-    $pieSingleDataSetCode
+    $pieMultipleDataSetsCode
     {{/code}}
   )))
   (% class="col-xs-12 col-sm-6 col-md-5" %)(((
-    $pieSingleDataSetCode
+    $pieMultipleDataSetsCode
   )))
 )))
 (% class="row" %)(((
@@ -174,6 +199,8 @@
   )))
 )))
 {{/velocity}}
+
+
 </content>
   <object>
     <name>XWiki.ChartJS.WebHome</name>
@@ -1052,7 +1079,13 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
       <defaultValue/>
     </property>
     <property>
-      <description>Advanced options specified as JSON. Checkout the Chart.js documentation for the available configuration options.</description>
+      <description>Advanced options specified as JSON. Checkout the [[Chart.js documentation&gt;&gt;http://www.chartjs.org/docs/latest/]] for the available configuration options. In addition to the options that can be defined in the standard ChartJS library, the following options can be used in this macro:
+* {{code language="none"}}"opacity": 0.8{{/code}}: makes it possible to define an opacity level for all the background colors.
+* {{code language="none"}}"backgroundColors": ["#ff16e8", "#0018f4","#065d00"]{{/code}}: for charts of type line, bar, horizontalBar or radar, this option makes it possible to define one background color per data set or one per value, withtout the need to define the colors for each data set individually.
+* {{code language="none"}}"percent": false{{/code}}: adds the percent sign to the data label values.
+* {{code language="none"}}"skipZeros": true{{/code}}: instructs the macro to not display values equalling to 0.
+* {{code language="none"}}"tooltips": {"maxCharactersPerLine": 50}{{/code}}: in case of long data labels, this option makes it possible to display the full data label in the tooltips, on several lines.
+</description>
     </property>
     <property>
       <mandatory>0</mandatory>

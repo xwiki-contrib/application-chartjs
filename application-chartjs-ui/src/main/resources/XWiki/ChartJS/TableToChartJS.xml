@@ -39,7 +39,33 @@
   <minorEdit>false</minorEdit>
   <syntaxId>xwiki/2.1</syntaxId>
   <hidden>true</hidden>
-  <content>== Examples ==
+  <content>== Description ==
+
+Draws charts using Chart.js and the data from a table.
+
+== Usage ==
+
+{{code language="none"}}
+(% id="myTable" %)
+|=Header1|=Header2
+|label|numeric value
+...
+
+{{tableToChartJS type="..." table="myTable" /}}
+{{/code}}
+
+== Parameters ==
+
+{{velocity}}
+#set ($parameters = $doc.getObjects('XWiki.WikiMacroParameterClass'))
+|=Name|=Description|=Mandatory|=Default
+#foreach ($parameter in $parameters)
+|$parameter.getProperty('name').value|$parameter.description|$parameter.mandatory|$parameter.defaultValue
+#end
+{{/velocity}}
+
+
+== Examples ==
 
 === Single Data Set ===
 
@@ -701,7 +727,7 @@ $jsontool.serialize({
       <defaultValue/>
     </property>
     <property>
-      <description>Advanced chart options specified as JSON. Checkout the Chart.js documentation for the available configuration options.</description>
+      <description>Advanced chart options specified as JSON. Please refer to the documentation of the same 'option' parameter of the [[ChartJS macro&gt;&gt;XWiki.ChartJS.WebHome]].</description>
     </property>
     <property>
       <mandatory>0</mandatory>
