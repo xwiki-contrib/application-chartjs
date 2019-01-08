@@ -73,7 +73,7 @@
               }
             },
             ~"plugins~": {~"datalabels~":
-            {~"anchor~":~"end~", ~"align~": ~"end~"}}}"}}
+            {~"anchor~":~"end~", ~"align~": ~"end~", ~"includeLegend~":true}}}"}}
 {
   "labels": [
     "Bug",
@@ -101,6 +101,31 @@
   }, {
     "label": "Diagram",
     "data": [34, 11, 6]
+  }]
+}
+{{/chartjs}}')
+
+#set ($mirroredHistogramWithLongLabelsCode ='{{chartjs type="horizontalBar"
+  options="{~"backgroundColors~": [~"#ff16e8~", ~"#0018f4~",~"#065d00~"],
+            ~"legend~": {~"display~": false},
+            ~"scales~": {
+              ~"yAxes~": [{
+                ~"barThickness~": 20,
+                ~"maxBarThickness~": 20,
+                ~"ticks~": { ~"mirror~": true, ~"padding~": -5, ~"labelOffset~": -20, ~"fontColor~": ~"#000~", ~"fontSize~": 14}
+              }]
+            },
+            ~"tooltips~": {~"maxCharactersPerLine~": 50}
+        }"}}
+{
+  "labels": [
+    "Bug",
+    "This is a long label with many words, all of them cannot get displayed entirely within the current container on a usual screen.",
+    "New Feature"
+  ],
+  "datasets": [{
+    "label": "CKEditor",
+    "data": [23, 17, 5]
   }]
 }
 {{/chartjs}}')
@@ -136,6 +161,16 @@
   )))
   (% class="col-xs-12 col-sm-6 col-md-5" %)(((
     $pieSingleDataSetCode
+  )))
+)))
+(% class="row" %)(((
+  (% class="col-xs-12 col-sm-6 col-md-7" %)(((
+    {{code language="none"}}
+    $mirroredHistogramWithLongLabelsCode
+    {{/code}}
+  )))
+  (% class="col-xs-12 col-sm-6 col-md-5" %)(((
+    $mirroredHistogramWithLongLabelsCode
   )))
 )))
 {{/velocity}}
@@ -511,6 +546,39 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
           }
         }
       }
+
+      if (options.tooltips &amp;&amp; options.tooltips.maxCharactersPerLine) {
+
+        function splitIntoLinesOfWords(string, maxCharactersPerLine) {
+          var lines = [];
+          var words = string.split(/\s/);
+          var currentLine = words[0];
+          var lineLength = currentLine.length;
+          for (var i = 1; i &lt; words.length; i++) {
+            var word = words[i];
+            lineLength += word.length + 1;
+            if (lineLength &lt;= maxCharactersPerLine) {
+              currentLine += " " + word;
+            } else {
+              lines.push(currentLine);
+              currentLine = word;
+              lineLength = word.length;
+            }
+          }
+          lines.push(currentLine);
+          return lines;
+        }
+
+        var maxCharactersPerLine = options.tooltips.maxCharactersPerLine;
+        options.tooltips.callbacks = {
+          title: function(tooltipItem, data) {
+            var title = data.labels[tooltipItem[0].index] || '';
+            var lines = splitIntoLinesOfWords(title, maxCharactersPerLine);
+            return lines;
+          }
+        }
+      }
+
 
       if (!options.plugins) {
         // In case there is no plugin in the options, we need to make sure that the datalabels library does not
