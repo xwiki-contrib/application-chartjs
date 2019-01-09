@@ -576,9 +576,13 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
 
       if (options.tooltips &amp;&amp; options.tooltips.maxCharactersPerLine) {
 
-        function splitIntoLinesOfWords(string, maxCharactersPerLine) {
+        function splitIntoLinesOfWords(value, maxCharactersPerLine) {
           var lines = [];
-          var words = string.split(/\s/);
+          // If value is not a string (e.g. an array in case the label is already splitted into multiple elements),
+          // return it as is.
+          if (typeof value != 'string')
+            return value;
+          var words = value.split(/\s/);
           var currentLine = words[0];
           var lineLength = currentLine.length;
           for (var i = 1; i &lt; words.length; i++) {
