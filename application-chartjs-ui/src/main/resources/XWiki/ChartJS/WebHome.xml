@@ -43,7 +43,7 @@
 
 Creates various types of charts using [[Chart.js&gt;&gt;http://www.chartjs.org/]].
 
-== Usage ==
+=== Usage ===
 
 {{code language="none"}}
 {{chartjs type="..." options="{...}"}}
@@ -54,17 +54,30 @@ Creates various types of charts using [[Chart.js&gt;&gt;http://www.chartjs.org/]
 {{/chartjs}}
 {{/code}}
 
-== Parameters ==
+=== Parameters ===
 
 {{velocity}}
 #set ($parameters = $doc.getObjects('XWiki.WikiMacroParameterClass'))
-|=Name|=Description|=Mandatory|=Default
+#set ($headers = '|=Name|=Description|=Mandatory|=Default')
+#set ($body = '')
 #foreach ($parameter in $parameters)
-|$parameter.getProperty('name').value|$parameter.description|$parameter.mandatory|$parameter.defaultValue
+#set ($isMandatory = ${parameter.getProperty('mandatory').value})
+#if ($isMandatory == 1) #set ($isMandatory = "Yes") #else #set ($isMandatory = "No") #end
+#set ($body = "$body|${parameter.getProperty('name').value}|(((${parameter.getProperty('description').value})))|$isMandatory|$parameter.getProperty('defaultValue').value
+")
 #end
+## This option is handy for generating the code to be pasted to the online extension.xwiki.org page for documenting the parameters statically (i.e. without having the macro object attached to the page).
+#if ($request.debug)
+{{code}}
+$headers
+$body
+{{/code}}
+#end
+$headers
+$body
 {{/velocity}}
 
-== Examples ==
+=== Examples ===
 
 {{velocity filter="none"}}
 #set ($horizontalBarCode = '{{chartjs type="horizontalBar"}}
