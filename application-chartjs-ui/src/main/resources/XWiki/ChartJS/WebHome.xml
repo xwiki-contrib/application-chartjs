@@ -78,7 +78,6 @@ $body
 {{/velocity}}
 
 === Examples ===
-
 {{velocity filter="none"}}
 #set ($horizontalBarCode = '{{chartjs type="horizontalBar"}}
 {
@@ -100,18 +99,24 @@ $body
 {{/chartjs}}')
 
 #set ($pieSingleDataSetCode = '{{chartjs type="pie"
-  options=''{"backgroundColors": ["#ff16e8", "#0018f4","#065d00"],
-            "legend": {"display": false},
-            "layout": {
-            "padding": {
-              "left": 50,
-              "right": 50,
-              "top": 50,
-              "bottom": 50
-              }
-            },
-            "plugins": {"datalabels":
-            {"anchor":"end", "align": "end", "includeLegend":true}}}''}}
+  options=''{
+      "backgroundColors": ["#ff16e8", "#0018f4","#065d00"],
+      "legend": {"display": false},
+      "layout": {
+        "padding": {
+          "left": 50,
+          "right": 50,
+          "top": 50,
+          "bottom": 50
+        }
+      },
+      "plugins": {
+        "datalabels": {
+          "anchor":"end",
+          "align": "end",
+          "includeLegend":true
+        }
+      }}''}}
 {
   "labels": [
     "Bug",
@@ -145,12 +150,14 @@ $body
 #set ($mirroredHistogramWithLongLabelsCode ='{{chartjs type="horizontalBar" options=''{
   "backgroundColors": ["#ff16e8", "#0018f4","#065d00"],
   "legend": {"display": false},
+  "afterValue": "%",
   "scales": {
     "yAxes": [{
       "barThickness": 20,
       "maxBarThickness": 20,
       "ticks": { "mirror": true, "padding": -5, "labelOffset": -20, "fontColor": "#000", "fontSize": 14}
-    }]
+    }],
+    "xAxes": [{"ticks": {"beginAtZero": true, "stepValue": 10, "max": 100, "afterValue": "%"}}]
   },
   "tooltips": {"maxCharactersPerLine": 50}
 }
@@ -163,7 +170,7 @@ $body
   ],
   "datasets": [{
     "label": "Lorem ipsum",
-    "data": [23, 17, 5]
+    "data": [23, 47, 30]
   }]
 }
 {{/chartjs}}')
@@ -614,12 +621,12 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
         }
 
         var maxCharactersPerLine = options.tooltips.maxCharactersPerLine;
-        options.tooltips.callbacks = {
-          title: function(tooltipItem, data) {
+        options.tooltips = options.tooltips || {};
+        options.tooltips.callbacks =  options.tooltips.callbacks || {};
+        options.tooltips.callbacks.title = function(tooltipItem, data) {
             var title = data.labels[tooltipItem[0].index] || '';
             var lines = splitIntoLinesOfWords(title, maxCharactersPerLine);
             return lines;
-          }
         }
       }
 
@@ -635,34 +642,42 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
             var legendItem = context.chart.legend.legendItems[context.dataIndex];
             if (legendItem) {
               var text = legendItem.text;
-              text = text + '\n' + value;
-              if (options.percent) {
-                return text + ' %';
-              } else {
-                return text;
+              var afterValue = options.afterValue;
+              if (options.afterValue) {
+                value = value + '' + options.afterValue;
               }
+              return text + '\n' + value;
             }
             return value;
           }
+        }
+      }
 
-          options.tooltips = {
-            callbacks: {
-              label: function(tooltipItem, data) {
-                var datasetIndex = tooltipItem.datasetIndex;
-                var index = tooltipItem.index;
-                var value = data.datasets[datasetIndex].data[index];
-                var label = data.labels[index];
-                var text = label + ' : '+ value;
-                if (options.percent) {
-                  return text + ' %';
-                } else {
-                  return text;
-                }
-              }
-            }
+      if (options.afterValue) {
+        options.tooltips = options.tooltips || {};
+        options.tooltips.callbacks =  options.tooltips.callbacks || {};
+        options.tooltips.callbacks.label = function(tooltipItem, data) {
+          var dataSet = data.datasets[tooltipItem.datasetIndex];
+          var value = dataSet.data[tooltipItem.index];
+          var label = dataSet.label;
+          return  label + ': ' + value + '' + options.afterValue;
+        }
+      }
+
+      // Handle the 'afterValue' option for ticks, when it exists: add a string
+      // after each tick value, typically a percent or a currency sign.
+      // TODO: fix access to deep nested values, see https://medium.com/javascript-inside/safely-accessing-deeply-nested-values-in-javascript-99bf72a0855a
+      function configureTicksCallback(axesName) {
+        if (options.scales &amp;&amp; options.scales[axesName] &amp;&amp; options.scales[axesName][0] &amp;&amp; options.scales[axesName][0].ticks &amp;&amp; options.scales[axesName][0].ticks.afterValue) {
+          var afterValue = options.scales[axesName][0].ticks.afterValue;
+          options.scales[axesName][0].ticks.callback = function(value, index, values) {
+            return value + '' + afterValue;
           }
         }
       }
+
+      configureTicksCallback('xAxes');
+      configureTicksCallback('yAxes');
 
       new Chart(canvas, {
         type: type,
@@ -1099,7 +1114,8 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
       <description>Advanced options specified as JSON. Checkout the [[Chart.js documentation&gt;&gt;http://www.chartjs.org/docs/latest/]] for the available configuration options. In addition to the options that can be defined in the standard ChartJS library, the following options can be used in this macro:
 * {{code language="none"}}"opacity": 0.8{{/code}}: makes it possible to define an opacity level for all the background colors.
 * {{code language="none"}}"backgroundColors": ["#ff16e8", "#0018f4","#065d00"]{{/code}}: for charts of type line, bar, horizontalBar or radar, this option makes it possible to define one background color per data set or one per value, withtout the need to define the colors for each data set individually.
-* {{code language="none"}}"percent": false{{/code}}: adds the percent sign to the data label values.
+* {{code language="none"}}"afterValue": "%"{{/code}}: suffixes the data label values with the given sign or string (e.g. "%", "€", etc.).
+* {{code language="none"}}"options.scales.xAxes[0].ticks.afterValue: "%"{{/code}}: (same for yAxes) suffixes the data labels with the given string.
 * {{code language="none"}}"skipZeros": true{{/code}}: instructs the macro to not display values equalling to 0.
 * {{code language="none"}}"tooltips": {"maxCharactersPerLine": 50}{{/code}}: in case of long data labels, this option makes it possible to display the full data label in the tooltips, on several lines.
 </description>
