@@ -73,6 +73,7 @@ $headers
 $body
 {{/code}}
 #end
+
 $headers
 $body
 {{/velocity}}
