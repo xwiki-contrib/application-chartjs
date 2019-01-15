@@ -73,7 +73,6 @@ $headers
 $body
 {{/code}}
 #end
-
 $headers
 $body
 {{/velocity}}
@@ -326,7 +325,7 @@ $body
 require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalabels, palette) {
   var chartTypesWithBackgroundColorPerDataSet = ['line', 'bar', 'horizontalBar', 'radar'];
 
-  var getData = function(canvas) {
+  var getData = function(canvas, options) {
     var deferred = $.Deferred();
     var data;
     try {
@@ -336,7 +335,7 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
     }
     if (data) {
       if (data.table &amp;&amp; $('table#' + data.table).length &gt; 0) {
-        data = readDataFromTable(data);
+        data = readDataFromTable(data, options);
       }
       deferred.resolve(data);
     }
@@ -454,12 +453,25 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
     return data;
   }
 
-  var readDataFromTable = function(options) {
+  var readDataFromTable = function(data, options) {
     var labels = [];
     var dataSets = [];
-    var rows = $('table#' + options.table + ' tr');
-    if (options.multipleDataSets) {
-      if (options.dataSetLabel) {
+    var rows = $('table#' + data.table + ' tr');
+
+    // In case there is an "afterValue" sign and the value contains this sign, remove it because
+    // only numeric values are expected for the chart data.
+    function maybeRemoveAfterValue(value) {
+      if (options.afterValue) {
+        var idx = value.indexOf(options.afterValue)
+        if (idx &gt; 0) {
+          value = value.substring(0, idx).trim()
+        }
+      }
+      return value
+    }
+
+    if (data.multipleDataSets) {
+      if (data.dataSetLabel) {
         var dataSetsByLabel = {};
         rows.each(function() {
           var cells = $(this).children('td');
@@ -470,7 +482,7 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
           if (labels.indexOf(label) &lt; 0) {
             labels.push(label);
           }
-          var dataSetLabel = $(cells[options.dataSetLabel]).text().trim();
+          var dataSetLabel = $(cells[data.dataSetLabel]).text().trim();
           var dataSet = dataSetsByLabel[dataSetLabel];
           if (!dataSet) {
             dataSet = {
@@ -482,7 +494,8 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
           var values = [];
           for (var i = 1; i &lt; cells.length; i++) {
             var value = $(cells[i]).text().trim();
-            if ($.isNumeric(value) &amp;&amp; i != options.dataSetLabel) {
+            value = maybeRemoveAfterValue(value)
+            if ($.isNumeric(value) &amp;&amp; i != data.dataSetLabel) {
               values.push(value);
             }
           }
@@ -507,6 +520,7 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
           labels.push(label);
           for (var i = 1, dataSetIndex = 0; i &lt; cells.length; i++) {
             var value = $(cells[i]).text().trim();
+            value = maybeRemoveAfterValue(value)
             if ($.isNumeric(value)) {
               var dataSet = dataSets[dataSetIndex];
               if (!dataSet) {
@@ -536,6 +550,7 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
         var values = [];
         for (var i = 1; i &lt; cells.length; i++) {
           var value = $(cells[i]).text().trim();
+          value = maybeRemoveAfterValue(value)
           if ($.isNumeric(value)) {
             values.push(value);
           }
@@ -552,7 +567,7 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
     return {
       labels: labels,
       datasets: dataSets,
-      table: options.table
+      table: data.table
     };
   };
 
@@ -568,7 +583,7 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
       console.log(exception)
     }
 
-    getData(canvas).then(function(data) {
+    getData(canvas, options).then(function(data) {
       return maybeSkipZeros(data, options, type);
     }).done(function(data) {
        return configureColors(data, options, type);
@@ -699,7 +714,7 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
 });</code>
     </property>
     <property>
-      <name/>
+      <name>JSX</name>
     </property>
     <property>
       <parse>1</parse>
@@ -815,7 +830,7 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
       <contentType>CSS</contentType>
     </property>
     <property>
-      <name/>
+      <name>SSX</name>
     </property>
     <property>
       <parse>0</parse>
