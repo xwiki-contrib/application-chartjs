@@ -80,7 +80,7 @@ $body
 
 === Examples ===
 {{velocity filter="none"}}
-#set ($horizontalBarCode = '{{chartjs type="horizontalBar"}}
+#set ($horizontalBarCode = '{{chartjs type="horizontalBar" options=''{"tooltips": {"position": {"left": 0.3}}}''}}
 {
   "labels": [
     "Bug",
@@ -647,6 +647,31 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
         }
       }
 
+      // Compute the point where the tooltip shows up from option parameters, if any.
+      if (options.tooltips &amp;&amp; options.tooltips.position) {
+        var xCoefficient = options.tooltips.position.left;
+        var yCoefficient = options.tooltips.position.bottom;
+        if (xCoefficient || yCoefficient) {
+          options.tooltips.position = 'custom';
+          Chart.Tooltip.positioners.custom = function(elements, eventPosition) {
+            // Initialize custom {x, y} to average
+            var customX = Chart.Tooltip.positioners.average(elements).x;
+            var customY = Chart.Tooltip.positioners.average(elements).y;
+
+            // Compute custom {x, y} if custom coefficient were provided
+            if (!isNaN(xCoefficient) &amp;&amp; this._chart &amp;&amp; this._chart.width) {
+              customX = Math.round(xCoefficient * this._chart.width);
+            }
+            if (!isNaN(yCoefficient) &amp;&amp; this._chart &amp;&amp; this._chart.height) {
+              customY = Math.round(yCoefficient * this._chart.height);
+            }
+            return {
+              x: customX,
+              y: customY
+            };
+          }
+        }
+      }
 
       if (!options.plugins) {
         // In case there is no plugin in the options, we need to make sure that the datalabels library does not
@@ -1135,7 +1160,7 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
 * {{code language="none"}}"options.scales.xAxes[0].ticks.afterValue: "%"{{/code}}: (same for yAxes) suffixes the data labels with the given string.
 * {{code language="none"}}"skipZeros": true{{/code}}: instructs the macro to not display values equalling to 0.
 * {{code language="none"}}"tooltips": {"maxCharactersPerLine": 50}{{/code}}: in case of long data labels, this option makes it possible to display the full data label in the tooltips, on several lines.
-</description>
+* {{code language="none"}}"tooltips": {"position": {"left": 0.5, "bottom": 0.2}}{{/code}}: allows to position the tooltips at a specific position of the canvas computed as the canvas' width or height multiplied by the given value (of "left" or "bottom"). If no value is provided, the "average" positioner is used.</description>
     </property>
     <property>
       <mandatory>0</mandatory>
