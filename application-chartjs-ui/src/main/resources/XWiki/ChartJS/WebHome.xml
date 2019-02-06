@@ -1018,7 +1018,7 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
   (% style="text-align: center" %)
   [[image:XWiki.ChartJS.WebHome@chartjs-logo.svg]]
   (% style="text-align: center; padding-top: 0.5em; color: #aaa" %)
-  ChartJS
+  $services.localization.render('rendering.macro.chartjs.placeholder')
 #end
 {{/velocity}}</code>
     </property>

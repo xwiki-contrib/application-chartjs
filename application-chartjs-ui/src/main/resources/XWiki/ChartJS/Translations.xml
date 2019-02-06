@@ -45,6 +45,7 @@ rendering.macro.chartjs.parameter.type.name=Type
 rendering.macro.chartjs.parameter.type.description=The type of chart. Choose from: line, bar, radar, pie, doughnut, polarArea, bubble, scatter.
 rendering.macro.chartjs.parameter.options.name=Options
 rendering.macro.chartjs.parameter.options.description=Advanced options specified as JSON. Checkout the Chart.js documentation for the available configuration options.
+rendering.macro.chartjs.placeholder=Chart placeholder
 
 rendering.macro.tableToChartJS.name=Table to ChartJS
 rendering.macro.tableToChartJS.description=Draws a chart using ChartJS and the data read from a table.
