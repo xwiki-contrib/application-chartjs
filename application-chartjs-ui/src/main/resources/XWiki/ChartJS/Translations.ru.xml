@@ -39,6 +39,25 @@
   <minorEdit>false</minorEdit>
   <syntaxId>plain/1.0</syntaxId>
   <hidden>true</hidden>
-  <content></content>
+  <content>rendering.macro.chartjs.name=ChartJS
+rendering.macro.chartjs.description=Простые HTML5-диаграммы с использованием элемента canvas.
+rendering.macro.chartjs.parameter.type.name=Тип
+rendering.macro.chartjs.parameter.type.description=Тип диаграммы.
+rendering.macro.chartjs.parameter.options.name=Параметры
+rendering.macro.chartjs.parameter.options.description=Дополнительные параметры указаны как JSON. Ознакомьтесь с документацией Chart.js о доступных параметрах конфигурации.
+rendering.macro.chartjs.placeholder=Источник диаграммы
+
+rendering.macro.tableToChartJS.name=Таблица для ChartJS
+rendering.macro.tableToChartJS.description=Рисует диаграмму, используя ChartJS и данные, считанные из таблицы.
+rendering.macro.tableToChartJS.parameter.type.name=Тип
+rendering.macro.tableToChartJS.parameter.type.description=Тип диаграммы.
+rendering.macro.tableToChartJS.parameter.options.name=Параметры
+### Missing: rendering.macro.tableToChartJS.parameter.options.description=Advanced chart options specified as JSON. Checkout the Chart.js documentation for the available configuration options.
+rendering.macro.tableToChartJS.parameter.table.name=Таблица
+rendering.macro.tableToChartJS.parameter.table.description=Определяет исходную таблицу.
+rendering.macro.tableToChartJS.parameter.multipleDataSets.name=Несколько наборов данных
+rendering.macro.tableToChartJS.parameter.multipleDataSets.description=Содержит ли указанная таблица несколько наборов данных.
+rendering.macro.tableToChartJS.parameter.dataSetLabel.name=Метка набора данных
+rendering.macro.tableToChartJS.parameter.dataSetLabel.description=Индекс столбца таблицы, который представляет метку набора данных.</content>
   
 </xwikidoc>
