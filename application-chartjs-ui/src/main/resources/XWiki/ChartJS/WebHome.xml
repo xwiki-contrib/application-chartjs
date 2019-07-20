@@ -80,7 +80,8 @@ $body
 
 === Examples ===
 {{velocity filter="none"}}
-#set ($horizontalBarCode = '{{chartjs type="horizontalBar" options=''{"tooltips": {"position": {"left": 0.3}}}''}}
+#set ($horizontalBarCode = '{{chartjs type="horizontalBar" 
+  options=''{"tooltips": {"position": {"left": 0.3}}, "width": "600px", "height": "400px", "maintainAspectRatio": false}''}}
 {
   "labels": [
     "Bug",
@@ -249,6 +250,7 @@ $body
       <validationScript/>
       <cache>
         <cache>0</cache>
+        <defaultValue>long</defaultValue>
         <disabled>0</disabled>
         <displayType>select</displayType>
         <multiSelect>0</multiSelect>
@@ -731,11 +733,19 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
       configureTicksCallback('xAxes');
       configureTicksCallback('yAxes');
 
-      new Chart(canvas, {
+      var chart = new Chart(canvas, {
         type: type,
         data: data,
         options: options
       });
+
+      // See: https://www.chartjs.org/docs/latest/general/responsive.html
+      if (options.width) {
+        chart.canvas.parentNode.style.width = options.width;
+      }
+      if (options.height) {
+        chart.canvas.parentNode.style.height = options.height;
+      }
 
       // If the table is hidden, move it to the canvas element and show it so that it can be read
       // by screen readers (screen readers ignore hidden elements).
@@ -775,6 +785,7 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
       <validationScript/>
       <cache>
         <cache>0</cache>
+        <defaultValue>long</defaultValue>
         <disabled>0</disabled>
         <displayType>select</displayType>
         <multiSelect>0</multiSelect>
@@ -889,6 +900,44 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
       <defaultWeb/>
       <nameField/>
       <validationScript/>
+      <async_cached>
+        <defaultValue>0</defaultValue>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType/>
+        <name>async_cached</name>
+        <number>11</number>
+        <prettyName>Cached</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </async_cached>
+      <async_context>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <multiSelect>1</multiSelect>
+        <name>async_context</name>
+        <number>12</number>
+        <prettyName>Context elements</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>5</size>
+        <unmodifiable>0</unmodifiable>
+        <values>doc.reference=Document|icon.theme=Icon theme|locale=Language|request.base=Request base URL|request.parameters=Request parameters|request.url=Request URL|request.wiki=Request wiki|user=User|wiki=Wiki</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </async_context>
+      <async_enabled>
+        <defaultValue>0</defaultValue>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType/>
+        <name>async_enabled</name>
+        <number>10</number>
+        <prettyName>Asynchronous rendering</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </async_enabled>
       <code>
         <disabled>0</disabled>
         <editor>Text</editor>
@@ -995,6 +1044,15 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
       </visibility>
     </class>
     <property>
+      <async_cached>0</async_cached>
+    </property>
+    <property>
+      <async_context/>
+    </property>
+    <property>
+      <async_enabled>0</async_enabled>
+    </property>
+    <property>
       <code>{{velocity}}
 #if ("$xcontext.action" != 'edit')
   {{html clean="false"}}
@@ -1099,6 +1157,15 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
         <unmodifiable>0</unmodifiable>
         <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
       </name>
+      <type>
+        <disabled>0</disabled>
+        <name>type</name>
+        <number>5</number>
+        <prettyName>Parameter type</prettyName>
+        <size>60</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </type>
     </class>
     <property>
       <defaultValue/>
@@ -1111,6 +1178,9 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
     </property>
     <property>
       <name>type</name>
+    </property>
+    <property>
+      <type/>
     </property>
   </object>
   <object>
@@ -1165,19 +1235,31 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
         <unmodifiable>0</unmodifiable>
         <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
       </name>
+      <type>
+        <disabled>0</disabled>
+        <name>type</name>
+        <number>5</number>
+        <prettyName>Parameter type</prettyName>
+        <size>60</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </type>
     </class>
     <property>
       <defaultValue/>
     </property>
     <property>
       <description>Advanced options specified as JSON. Checkout the [[Chart.js documentation&gt;&gt;http://www.chartjs.org/docs/latest/]] for the available configuration options. In addition to the options that can be defined in the standard ChartJS library, the following options can be used in this macro:
-* {{code language="none"}}"opacity": 0.8{{/code}}: makes it possible to define an opacity level for all the background colors.
-* {{code language="none"}}"backgroundColors": ["#ff16e8", "#0018f4","#065d00"]{{/code}}: for charts of type line, bar, horizontalBar or radar, this option makes it possible to define one background color per data set or one per value, withtout the need to define the colors for each data set individually.
-* {{code language="none"}}"afterValue": "%"{{/code}}: suffixes the data label values with the given sign or string (e.g. "%", "€", etc.).
-* {{code language="none"}}"options.scales.xAxes[0].ticks.afterValue: "%"{{/code}}: (same for yAxes) suffixes the data labels with the given string.
-* {{code language="none"}}"skipZeros": true{{/code}}: instructs the macro to not display values equalling to 0.
-* {{code language="none"}}"tooltips": {"maxCharactersPerLine": 50}{{/code}}: in case of long data labels, this option makes it possible to display the full data label in the tooltips, on several lines.
-* {{code language="none"}}"tooltips": {"position": {"left": 0.5, "bottom": 0.2}}{{/code}}: allows to position the tooltips at a specific position of the canvas computed as the canvas' width or height multiplied by the given value (of "left" or "bottom"). If no value is provided, the "average" positioner is used.</description>
+
+|##"opacity": 0.8##|Makes it possible to define an opacity level for all the background colors.
+|##"width": "400px"##|Overrides the chart container width that gets computed automatically.
+|##"height": "400px"##|Overrides the chart's container height that gets computed automatically. If used in combination with the ##width## option, the option ##maintainAspectRatio## has to be set to ##false## for both options to be taken into account.
+|##"backgroundColors": ["#ff16e8", "#0018f4","#065d00"]|For charts of type line, bar, horizontalBar or radar, this option makes it possible to define one background color per data set or one per value, withtout the need to define the colors for each data set individually.
+|##"afterValue": "%"##|Suffixes the data label values with the given sign or string (e.g. "%", "€", etc.).
+|##"options.scales.xAxes[0].ticks.afterValue: "%"##|(Same for yAxes) suffixes the data labels with the given string.
+|##"skipZeros": true##|Instructs the macro to not display values equalling to 0.
+|##"tooltips": {"maxCharactersPerLine": 50}##In case of long data labels, this option makes it possible to display the full data label in the tooltips, on several lines.
+##"tooltips": {"position": {"left": 0.5, "bottom": 0.2}}##|Allows to position the tooltips at a specific position of the canvas computed as the canvas' width or height multiplied by the given value (of "left" or "bottom"). If no value is provided, the "average" positioner is used.</description>
     </property>
     <property>
       <mandatory>0</mandatory>
@@ -1185,137 +1267,8 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
     <property>
       <name>options</name>
     </property>
-  </object>
-  <object>
-    <name>XWiki.ChartJS.WebHome</name>
-    <number>2</number>
-    <className>XWiki.WikiMacroParameterClass</className>
-    <guid>7ed61b8f-3ea3-4b71-b9df-426c10b07393</guid>
-    <class>
-      <name>XWiki.WikiMacroParameterClass</name>
-      <customClass/>
-      <customMapping/>
-      <defaultViewSheet/>
-      <defaultEditSheet/>
-      <defaultWeb/>
-      <nameField/>
-      <validationScript/>
-      <defaultValue>
-        <disabled>0</disabled>
-        <name>defaultValue</name>
-        <number>4</number>
-        <prettyName>Parameter default value</prettyName>
-        <size>30</size>
-        <unmodifiable>0</unmodifiable>
-        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
-      </defaultValue>
-      <description>
-        <disabled>0</disabled>
-        <name>description</name>
-        <number>2</number>
-        <prettyName>Parameter description</prettyName>
-        <rows>5</rows>
-        <size>40</size>
-        <unmodifiable>0</unmodifiable>
-        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
-      </description>
-      <mandatory>
-        <disabled>0</disabled>
-        <displayFormType>select</displayFormType>
-        <displayType>yesno</displayType>
-        <name>mandatory</name>
-        <number>3</number>
-        <prettyName>Parameter mandatory</prettyName>
-        <unmodifiable>0</unmodifiable>
-        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
-      </mandatory>
-      <name>
-        <disabled>0</disabled>
-        <name>name</name>
-        <number>1</number>
-        <prettyName>Parameter name</prettyName>
-        <size>30</size>
-        <unmodifiable>0</unmodifiable>
-        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
-      </name>
-    </class>
     <property>
-      <defaultValue/>
-    </property>
-    <property>
-      <description>Width of the generated chart.</description>
-    </property>
-    <property>
-      <mandatory>0</mandatory>
-    </property>
-    <property>
-      <name>width</name>
-    </property>
-  </object>
-  <object>
-    <name>XWiki.ChartJS.WebHome</name>
-    <number>3</number>
-    <className>XWiki.WikiMacroParameterClass</className>
-    <guid>5e80df50-adb7-44c0-87c8-b2b7453399a3</guid>
-    <class>
-      <name>XWiki.WikiMacroParameterClass</name>
-      <customClass/>
-      <customMapping/>
-      <defaultViewSheet/>
-      <defaultEditSheet/>
-      <defaultWeb/>
-      <nameField/>
-      <validationScript/>
-      <defaultValue>
-        <disabled>0</disabled>
-        <name>defaultValue</name>
-        <number>4</number>
-        <prettyName>Parameter default value</prettyName>
-        <size>30</size>
-        <unmodifiable>0</unmodifiable>
-        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
-      </defaultValue>
-      <description>
-        <disabled>0</disabled>
-        <name>description</name>
-        <number>2</number>
-        <prettyName>Parameter description</prettyName>
-        <rows>5</rows>
-        <size>40</size>
-        <unmodifiable>0</unmodifiable>
-        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
-      </description>
-      <mandatory>
-        <disabled>0</disabled>
-        <displayFormType>select</displayFormType>
-        <displayType>yesno</displayType>
-        <name>mandatory</name>
-        <number>3</number>
-        <prettyName>Parameter mandatory</prettyName>
-        <unmodifiable>0</unmodifiable>
-        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
-      </mandatory>
-      <name>
-        <disabled>0</disabled>
-        <name>name</name>
-        <number>1</number>
-        <prettyName>Parameter name</prettyName>
-        <size>30</size>
-        <unmodifiable>0</unmodifiable>
-        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
-      </name>
-    </class>
-    <property>
-      <defaultValue/>
-    </property>
-    <property>
-      <description>Height of the generated chart.</description>
-    </property>
-    <property>
-      <mandatory>0</mandatory>
-    </property>
-    <property>
-      <name>height</name>
+      <type/>
     </property>
   </object>
   <object>
@@ -1370,6 +1323,15 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
         <unmodifiable>0</unmodifiable>
         <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
       </name>
+      <type>
+        <disabled>0</disabled>
+        <name>type</name>
+        <number>5</number>
+        <prettyName>Parameter type</prettyName>
+        <size>60</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </type>
     </class>
     <property>
       <defaultValue/>
@@ -1382,6 +1344,9 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
     </property>
     <property>
       <name>cssClass</name>
+    </property>
+    <property>
+      <type/>
     </property>
   </object>
 </xwikidoc>
