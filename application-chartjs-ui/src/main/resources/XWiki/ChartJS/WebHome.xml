@@ -407,6 +407,45 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
           dataSet.backgroundColor = convertHex(dataSet.backgroundColor.substring(1), opacity);
         }
       }
+      // configure border colors as well
+      if (!dataSet.borderColor || dataSet.borderColor.length == 0) {
+        if (chartTypesWithBackgroundColorPerDataSet.indexOf(type) &gt;= 0) {
+          if (options.borderColors) {
+            // Either one color per dataset or, if the number of datasets is the same as the number of
+            // colors, otherwise one color per value.
+            if (data.datasets.length == options.borderColors.length) {
+              // One color per dataset, from the options.
+              dataSet.borderColor = convertHex(options.borderColors[index].substring(1), opacity);
+            } else {
+              // One color per value, from the options.
+              dataSet.borderColor = options.borderColors.map(function(hex) {
+                return convertHex(hex.substring(1), opacity);
+              });
+            }
+          }
+        } else {
+          if (options.borderColors) {
+            // One background color per value, from the options.
+            dataSet.borderColor = options.borderColors.map(function(hex) {
+              return convertHex(hex.substring(1), opacity);
+            });
+          }
+        }
+      }
+      // configure border width
+      if (!dataSet.borderWidth || dataSet.borderWidth.length == 0) {
+        if (options.borderWidths) {
+          // Either one border witdth per dataset or, if the number of datasets is the same as the number of
+          // borders, otherwise one border per value.
+          if (data.datasets.length == options.borderWidths.length) {
+            // One border width per dataset, from the options.
+            dataSet.borderWidth = options.borderWidths[index];
+          } else {
+            // One border width for all datasets, from the options.
+            dataSet.borderWidth = options.borderWidths;
+          }
+        }
+      }
     });
 
     return data;
