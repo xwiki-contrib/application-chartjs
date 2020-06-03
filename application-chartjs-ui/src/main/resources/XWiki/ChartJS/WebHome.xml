@@ -691,6 +691,7 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
         Chart.defaults.global.plugins.datalabels.display = false;
       } else if (options.plugins.datalabels) {
         Chart.defaults.global.plugins.datalabels.display = true;
+        // if the legend is included, compute it and display it
         if (options.plugins.datalabels.includeLegend) {
           options.plugins.datalabels.formatter = function(value, context) {
             var legendItem = context.chart.legend.legendItems[context.dataIndex];
@@ -703,6 +704,13 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
               return text + '\n' + value;
             }
             return value;
+          }
+        } else {
+          // if an after value is configured, add the after value
+          if (options.afterValue) {
+            options.plugins.datalabels.formatter = function(value, context) {
+              return "" + value + options.afterValue;
+            }
           }
         }
       }
