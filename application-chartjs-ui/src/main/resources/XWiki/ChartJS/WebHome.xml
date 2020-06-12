@@ -724,6 +724,8 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
         }
       }
 
+      var chartPlugins = [];
+
       if (!options.plugins) {
         // In case there is no plugin in the options, we need to make sure that the datalabels library does not
         // override the default behaviour of chartjs for displaying data labels.
@@ -751,6 +753,42 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
               return "" + value + options.afterValue;
             }
           }
+        }
+        // take into account the compute and display of the total numbers in the datalabels, particularily useful for a stacked chart
+        if (options.plugins.datalabels.computeTotals) {
+          // code from: https://jsfiddle.net/simonbrunel/9ezggxx5/ from https://github.com/chartjs/chartjs-plugin-datalabels/issues/16
+          // 1. define the plugins variable, with a totalizer plugin to compute the totals upon load of the table
+          chartPlugins.push({
+            id: 'totalizer',
+
+            beforeUpdate: function(chart) {
+              var totals = {};
+              var utmost = 0;
+
+              chart.data.datasets.forEach(function(dataset, datasetIndex) {
+                if (chart.isDatasetVisible(datasetIndex)) {
+                  utmost = datasetIndex
+                  dataset.data.forEach(function(value, index) {
+                    totals[index] = (totals[index] || 0) + parseFloat(value);
+                  });
+                }
+              });
+
+              chart.totalizer = {totals: totals, utmost: utmost};
+            }
+          });
+          // 2. add configurations to the datalabels plugin to display the totals properly for the currently displayed dataset
+          options.plugins.datalabels.formatter = function(value, ctx) {
+            var total = "" + ctx.chart.totalizer.totals[ctx.dataIndex];
+            // if an after value is configured, add it as well in the total values label
+            if (options.afterValue) {
+              total += options.afterValue;
+            }
+            return total;
+          };
+          options.plugins.datalabels.display = function(ctx) {
+            return ctx.datasetIndex === ctx.chart.totalizer.utmost;
+          };
         }
       }
 
@@ -783,7 +821,8 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
       var chart = new Chart(canvas, {
         type: type,
         data: data,
-        options: options
+        options: options,
+        plugins: chartPlugins
       });
 
       // See: https://www.chartjs.org/docs/latest/general/responsive.html
