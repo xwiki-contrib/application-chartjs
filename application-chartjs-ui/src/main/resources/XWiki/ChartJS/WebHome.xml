@@ -795,7 +795,7 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
       // If there is a legend that is displayed on top, add a small padding between the legend and the chart
       // solution from https://stackoverflow.com/a/53153992
       // use a custom extension to get the padding to set
-      if (options.legend.display == true &amp;&amp; options.legend.position == 'top' &amp;&amp; options.legend.x_padding) {
+      if (options.legend.display != false &amp;&amp; options.legend.position == 'top' &amp;&amp; options.legend.x_padding) {
         chartPlugins.push({
           beforeInit: function(chart, ctx) {
             chart.legend.afterFit = function() {
