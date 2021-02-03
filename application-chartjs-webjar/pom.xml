@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.xwiki.contrib</groupId>
     <artifactId>application-chartjs</artifactId>
-    <version>1.3-SNAPSHOT</version>
+    <version>1.3</version>
   </parent>
   <artifactId>application-chartjs-webjar</artifactId>
   <name>Chart.js Integration - WebJar</name>
