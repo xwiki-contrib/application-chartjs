@@ -748,9 +748,12 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
           }
         } else {
           // if an after value is configured, add the after value
-          if (options.afterValue) {
+          if (options.localization !== undefined || options.afterValue !== undefined) {
             options.plugins.datalabels.formatter = function(value, context) {
-              return "" + value + options.afterValue;
+              if (options.localization !== undefined)
+                value = parseFloat(value).toLocaleString(options.localization.locale, options.localization.options);
+              if (options.afterValue !== undefined)
+                return '' + value + options.afterValue;
             }
           }
         }
@@ -795,7 +798,7 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
       // If there is a legend that is displayed on top, add a small padding between the legend and the chart
       // solution from https://stackoverflow.com/a/53153992
       // use a custom extension to get the padding to set
-      if (options.legend.display != false &amp;&amp; options.legend.position == 'top' &amp;&amp; options.legend.x_padding) {
+      if (options.legend !== undefined &amp;&amp; options.legend.display != false &amp;&amp; options.legend.position == 'top' &amp;&amp; options.legend.x_padding) {
         chartPlugins.push({
           beforeInit: function(chart, ctx) {
             chart.legend.afterFit = function() {
@@ -804,15 +807,17 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
           }
         });
       }
-
-      if (options.afterValue) {
+      if (options.localization !== undefined || options.afterValue !== undefined) {
         options.tooltips = options.tooltips || {};
         options.tooltips.callbacks =  options.tooltips.callbacks || {};
         options.tooltips.callbacks.label = function(tooltipItem, data) {
           var dataSet = data.datasets[tooltipItem.datasetIndex];
           var value = dataSet.data[tooltipItem.index];
           var label = dataSet.label;
-          return  label + ': ' + value + '' + options.afterValue;
+          if (options.localization !== undefined) {
+            value = parseFloat(value).toLocaleString(options.localization.locale, options.localization.options);
+          }
+          return  label + ': ' + value + '' + (options.afterValue || '');
         }
       }
 
