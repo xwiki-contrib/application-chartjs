@@ -80,7 +80,7 @@ $body
 
 === Examples ===
 {{velocity filter="none"}}
-#set ($horizontalBarCode = '{{chartjs type="horizontalBar" 
+#set ($horizontalBarCode = '{{chartjs type="horizontalBar" title="CKEditor and Diagram Issues"
   options=''{"tooltips": {"position": {"left": 0.3}}, "width": "600px", "height": "400px", "maintainAspectRatio": false}''}}
 {
   "labels": [
@@ -100,7 +100,7 @@ $body
 }
 {{/chartjs}}')
 
-#set ($pieSingleDataSetCode = '{{chartjs type="pie"
+#set ($pieSingleDataSetCode = '{{chartjs type="pie" title="Issues"
   options=''{
       "backgroundColors": ["#ff16e8", "#0018f4","#065d00"],
       "legend": {"display": false},
@@ -1163,16 +1163,21 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
   #set ($discard = $xwiki.ssx.use($xcontext.macro.doc))
   #set ($discard = $xwiki.jsx.use($xcontext.macro.doc))
   #set ($cssClass = "$!escapetool.xml($xcontext.macro.params.cssClass)")
+  #set ($title = "$!escapetool.xml($xcontext.macro.params.title)")
   #set ($cssClasses = 'chart-container')
   #if ($cssClass != '')
     #set ($cssClasses = "$cssClasses $cssClass")
   #end
   &lt;div class="$cssClasses"&gt;
-    &lt;canvas class="chart" data-type="$!escapetool.xml($xcontext.macro.params.type)"
+    &lt;canvas
+      #if($title != '')aria-label="$title"#end
+      class="chart"
+      data-type="$!escapetool.xml($xcontext.macro.params.type)"
       data-options="$!escapetool.xml($xcontext.macro.params.options)"
       data-source="$!escapetool.xml($xcontext.macro.content)"
       width="$!escapetool.xml($xcontext.macro.params.width)"
-      height="$!escapetool.xml($xcontext.macro.params.height)"&gt;
+      height="$!escapetool.xml($xcontext.macro.params.height)"
+      role="img"&gt;
     &lt;/canvas&gt;
   &lt;/div&gt;
   {{/html}}
@@ -1358,7 +1363,7 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
 |##"opacity": 0.8##|Makes it possible to define an opacity level for all the background colors.
 |##"width": "400px"##|Overrides the chart container width that gets computed automatically.
 |##"height": "400px"##|Overrides the chart's container height that gets computed automatically. If used in combination with the ##width## option, the option ##maintainAspectRatio## has to be set to ##false## for both options to be taken into account.
-|##"backgroundColors": ["#ff16e8", "#0018f4","#065d00"]|For charts of type line, bar, horizontalBar or radar, this option makes it possible to define one background color per data set or one per value, withtout the need to define the colors for each data set individually.
+|##"backgroundColors": ["#ff16e8", "#0018f4","#065d00"]##|For charts of type line, bar, horizontalBar or radar, this option makes it possible to define one background color per data set or one per value, withtout the need to define the colors for each data set individually.
 |##"afterValue": "%"##|Suffixes the data label values with the given sign or string (e.g. "%", "€", etc.).
 |##"options.scales.xAxes[0].ticks.afterValue: "%"##|(Same for yAxes) suffixes the data labels with the given string.
 |##"skipZeros": true##|Instructs the macro to not display values equalling to 0.
@@ -1451,6 +1456,72 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
     </property>
     <property>
       <type/>
+    </property>
+  </object>
+  <object>
+    <name>XWiki.ChartJS.WebHome</name>
+    <number>5</number>
+    <className>XWiki.WikiMacroParameterClass</className>
+    <guid>d9bf2576-b1bd-4dd1-9a43-ffe07fdff0c3</guid>
+    <class>
+      <name>XWiki.WikiMacroParameterClass</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <defaultValue>
+        <disabled>0</disabled>
+        <name>defaultValue</name>
+        <number>4</number>
+        <prettyName>Parameter default value</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </defaultValue>
+      <description>
+        <disabled>0</disabled>
+        <name>description</name>
+        <number>2</number>
+        <prettyName>Parameter description</prettyName>
+        <rows>5</rows>
+        <size>40</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </description>
+      <mandatory>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType>yesno</displayType>
+        <name>mandatory</name>
+        <number>3</number>
+        <prettyName>Parameter mandatory</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </mandatory>
+      <name>
+        <disabled>0</disabled>
+        <name>name</name>
+        <number>1</number>
+        <prettyName>Parameter name</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </name>
+    </class>
+    <property>
+      <defaultValue/>
+    </property>
+    <property>
+      <description>Chart title, added as aria-label to the generated canvas</description>
+    </property>
+    <property>
+      <mandatory>0</mandatory>
+    </property>
+    <property>
+      <name>title</name>
     </property>
   </object>
 </xwikidoc>
