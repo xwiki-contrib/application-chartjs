@@ -80,7 +80,7 @@ $body
 
 === Examples ===
 {{velocity filter="none"}}
-#set ($horizontalBarCode = '{{chartjs type="horizontalBar" title="CKEditor and Diagram Issues"
+#set ($horizontalBarCode = '{{chartjs type="horizontalBar" id="ckeditor-diagram-issues" title="CKEditor and Diagram Issues"
   options=''{"tooltips": {"position": {"left": 0.3}}, "width": "600px", "height": "400px", "maintainAspectRatio": false}''}}
 {
   "labels": [
@@ -100,7 +100,7 @@ $body
 }
 {{/chartjs}}')
 
-#set ($pieSingleDataSetCode = '{{chartjs type="pie" title="Issues"
+#set ($pieSingleDataSetCode = '{{chartjs type="pie" id="pie-1" title="Issues"
   options=''{
       "backgroundColors": ["#ff16e8", "#0018f4","#065d00"],
       "legend": {"display": false},
@@ -1163,6 +1163,7 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
   #set ($discard = $xwiki.ssx.use($xcontext.macro.doc))
   #set ($discard = $xwiki.jsx.use($xcontext.macro.doc))
   #set ($cssClass = "$!escapetool.xml($xcontext.macro.params.cssClass)")
+  #set ($id = "$!escapetool.xml($xcontext.macro.params.id)")
   #set ($title = "$!escapetool.xml($xcontext.macro.params.title)")
   #set ($cssClasses = 'chart-container')
   #if ($cssClass != '')
@@ -1170,6 +1171,7 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
   #end
   &lt;div class="$cssClasses"&gt;
     &lt;canvas
+      #if($id != '')id="$id"#end
       #if($title != '')aria-label="$title"#end
       class="chart"
       data-type="$!escapetool.xml($xcontext.macro.params.type)"
@@ -1522,6 +1524,72 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
     </property>
     <property>
       <name>title</name>
+    </property>
+  </object>
+  <object>
+    <name>XWiki.ChartJS.WebHome</name>
+    <number>6</number>
+    <className>XWiki.WikiMacroParameterClass</className>
+    <guid>3f4d9ef8-6d6e-4f95-ae6d-daf74ddaf898</guid>
+    <class>
+      <name>XWiki.WikiMacroParameterClass</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <defaultValue>
+        <disabled>0</disabled>
+        <name>defaultValue</name>
+        <number>4</number>
+        <prettyName>Parameter default value</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </defaultValue>
+      <description>
+        <disabled>0</disabled>
+        <name>description</name>
+        <number>2</number>
+        <prettyName>Parameter description</prettyName>
+        <rows>5</rows>
+        <size>40</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </description>
+      <mandatory>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType>yesno</displayType>
+        <name>mandatory</name>
+        <number>3</number>
+        <prettyName>Parameter mandatory</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </mandatory>
+      <name>
+        <disabled>0</disabled>
+        <name>name</name>
+        <number>1</number>
+        <prettyName>Parameter name</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </name>
+    </class>
+    <property>
+      <defaultValue/>
+    </property>
+    <property>
+      <description>Chart identifier</description>
+    </property>
+    <property>
+      <mandatory>0</mandatory>
+    </property>
+    <property>
+      <name>id</name>
     </property>
   </object>
 </xwikidoc>
