@@ -623,8 +623,7 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
     };
   };
 
-  $('canvas.chart').each(function() {
-    var canvas = $(this);
+  var createChart = function(canvas) {
     var type = canvas.attr('data-type');
 
     var options = {};
@@ -635,11 +634,12 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
       console.log(exception)
     }
 
-    getData(canvas, options).then(function(data) {
+    return getData(canvas, options).then(function(data) {
       return maybeSkipZeros(data, options, type);
     }).done(function(data) {
        return configureColors(data, options, type);
-    }).done(function(data) {
+    }).then(function(data) {
+      var chartReady = $.Deferred();
 
       if (options.labelsMap) {
         for (var i = 0; i &lt; data.labels.length; i++) {
@@ -836,6 +836,13 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
       configureTicksCallback('xAxes');
       configureTicksCallback('yAxes');
 
+      options.animation = $.extend(options.animation, {
+        // See https://www.chartjs.org/docs/latest/configuration/animations.html#animation-callbacks
+        onComplete: function(animation) {
+          chartReady.resolve(chart);
+        }
+      });
+
       var chart = new Chart(canvas, {
         type: type,
         data: data,
@@ -859,7 +866,20 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
         table.removeClass('hidden');
       }
 
+      return chartReady.promise();
     });
+  };
+
+  var maybeDelayPageReady = function(promise, reason) {
+    if (require.defined('xwiki-page-ready')) {
+      require(['xwiki-page-ready'], function(pageReady) {
+        pageReady.delayPageReady(Promise.resolve(promise), reason);
+      });
+    }
+  };
+
+  $('canvas.chart').each(function() {
+    maybeDelayPageReady(createChart($(this)), 'chart.js');
   });
 });</code>
     </property>
