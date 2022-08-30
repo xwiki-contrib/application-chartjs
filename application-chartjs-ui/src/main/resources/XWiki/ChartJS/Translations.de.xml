@@ -45,7 +45,6 @@ rendering.macro.chartjs.parameter.type.name=Typ
 rendering.macro.chartjs.parameter.type.description=Der Diagrammtyp. Wählen Sie aus: Line, Bar, Radar, Pie, Donut, PolarArea, Bubble, Scatter.
 rendering.macro.chartjs.parameter.options.name=Optionen
 rendering.macro.chartjs.parameter.options.description=Erweiterte Optionen, die als JSON angegeben sind. Sehen Sie sich die Chart.js-Dokumentation für die verfügbaren Konfigurationsoptionen an.
-rendering.macro.chartjs.placeholder=Diagrammplatzhalter
 rendering.macro.tableToChartJS.name=Tabelle zu ChartJS
 rendering.macro.tableToChartJS.description=Zeichnet ein Diagramm mit ChartJS und liest die Daten aus einer Tabelle.
 rendering.macro.tableToChartJS.parameter.type.name=Typ
@@ -58,5 +57,13 @@ rendering.macro.tableToChartJS.parameter.multipleDataSets.name=Mehrere Datensät
 rendering.macro.tableToChartJS.parameter.multipleDataSets.description=Ob die angegebene Tabelle mehrere Datensätze enthält.
 rendering.macro.tableToChartJS.parameter.dataSetLabel.name=Datensatzbezeichnung
 rendering.macro.tableToChartJS.parameter.dataSetLabel.description=Der Index der Tabellenspalte, die die Datensatzbezeichnung darstellt.
-</content>
-  </xwikidoc>
+
+## Used to indicate where deprecated keys start
+#@deprecatedstart
+
+## Deprecated since 1.7
+rendering.macro.chartjs.placeholder=Diagrammplatzhalter
+
+## Used to indicate where deprecated keys end
+#@deprecatedend</content>
+</xwikidoc>

@@ -45,7 +45,6 @@ rendering.macro.chartjs.parameter.type.name=Type
 rendering.macro.chartjs.parameter.type.description=Le type de graphique. Choisissez parmi : ligne, barre, étoile, camembert, anneau, polarArea, bulle, nuage de points.
 rendering.macro.chartjs.parameter.options.name=Options
 rendering.macro.chartjs.parameter.options.description=Options avancées spécifiées comme JSON. Consultez la documentation de Chart.js pour les options de configuration disponibles.
-rendering.macro.chartjs.placeholder=Espace réservé au graphique
 
 rendering.macro.tableToChartJS.name=Tableau à ChartJS
 rendering.macro.tableToChartJS.description=Dessine un graphique à l'aide de ChartJS et des données lues dans un tableau.
@@ -58,5 +57,14 @@ rendering.macro.tableToChartJS.parameter.table.description=Identifie le tableau 
 rendering.macro.tableToChartJS.parameter.multipleDataSets.name=Ensembles de données multiples
 rendering.macro.tableToChartJS.parameter.multipleDataSets.description=Si le tableau spécifiée comprend plusieurs ensembles de données.
 rendering.macro.tableToChartJS.parameter.dataSetLabel.name=Nom de l'ensemble de données
-rendering.macro.tableToChartJS.parameter.dataSetLabel.description=L'index de la colonne du tableau qui représente le nom de l'ensemble de données.</content>
+rendering.macro.tableToChartJS.parameter.dataSetLabel.description=L'index de la colonne du tableau qui représente le nom de l'ensemble de données.
+
+## Used to indicate where deprecated keys start
+#@deprecatedstart
+
+## Deprecated since 1.7
+rendering.macro.chartjs.placeholder=Espace réservé au graphique
+
+## Used to indicate where deprecated keys end
+#@deprecatedend</content>
 </xwikidoc>
