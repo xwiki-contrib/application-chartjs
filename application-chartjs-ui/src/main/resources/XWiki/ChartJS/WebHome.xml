@@ -878,9 +878,7 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
   init($(document));
 
   // Re-init updated sub-parts of the document.
-  console.log("MAIN")
   $(document).on('xwiki:dom:updated', function(event, data) {
-    console.log("xwiki:dom:updated")
     // Limit the init to the updated content only.
     var container = $((data &amp;&amp; data.elements) || document);
     init(container);
