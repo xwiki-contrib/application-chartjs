@@ -57,7 +57,7 @@
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>https://raw.githubusercontent.com/google/palette.js/master/palette.js</url>
+              <url>https://raw.githubusercontent.com/google/palette.js/8418158452401c15d276d9632b88933aa581718f/palette.js</url>
               <outputDirectory>${webjar.contentDirectory}</outputDirectory>
             </configuration>
           </execution>
