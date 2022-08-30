@@ -878,8 +878,20 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
     }
   };
 
-  $('canvas.chart').each(function() {
-    maybeDelayPageReady(createChart($(this)), 'chart.js');
+  var init = function(root) {
+    root.find('canvas.chart').each(function() {
+      maybeDelayPageReady(createChart($(this)), 'chart.js');
+    });
+  }
+
+  // Init the whole document once.
+  init($(document));
+
+  // Re-init updated sub-parts of the document.
+  $(document).on('xwiki:dom:updated', function(event, data) {
+    // Limit the init to the updated content only.
+    var container = $((data &amp;&amp; data.elements) || document);
+    init(container);
   });
 });</code>
     </property>
