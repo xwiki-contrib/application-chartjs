@@ -45,7 +45,6 @@ rendering.macro.chartjs.parameter.type.name=Tipo
 rendering.macro.chartjs.parameter.type.description=El tipo de gráfica. Escoge entre: lineal, barras, radar, pastel, rosquilla, de área polar, burbuja, dispersión.
 rendering.macro.chartjs.parameter.options.name=Opciones
 rendering.macro.chartjs.parameter.options.description=Opciones avanzadas especificadas como JSON. Comprueba la documentación de Chart.js para ver las opciones de configuración disponibles.
-rendering.macro.chartjs.placeholder=Marcador de posición del gráfico
 
 rendering.macro.tableToChartJS.name=Tabla a ChartJS
 rendering.macro.tableToChartJS.description=Dibuja una gráfica utilizando ChartJS y los datos leídos de una tabla.
@@ -58,6 +57,14 @@ rendering.macro.tableToChartJS.parameter.table.description=Identifica la fuente 
 rendering.macro.tableToChartJS.parameter.multipleDataSets.name=Conjuntos de datos múltiples
 rendering.macro.tableToChartJS.parameter.multipleDataSets.description=Si la tabla especificada incluye conjuntos de datos múltiples.
 rendering.macro.tableToChartJS.parameter.dataSetLabel.name=Etiqueta del conjunto de datos
-rendering.macro.tableToChartJS.parameter.dataSetLabel.description=El índice de la columna de la tabla que representa la etiqueta del conjunto de datos.</content>
-  
+rendering.macro.tableToChartJS.parameter.dataSetLabel.description=El índice de la columna de la tabla que representa la etiqueta del conjunto de datos.
+
+## Used to indicate where deprecated keys start
+#@deprecatedstart
+
+## Deprecated since 1.7
+rendering.macro.chartjs.placeholder=Marcador de posición del gráfico
+
+## Used to indicate where deprecated keys end
+#@deprecatedend</content>
 </xwikidoc>

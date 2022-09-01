@@ -45,7 +45,6 @@ rendering.macro.chartjs.parameter.type.name=Тип
 rendering.macro.chartjs.parameter.type.description=Тип диаграммы.
 rendering.macro.chartjs.parameter.options.name=Параметры
 rendering.macro.chartjs.parameter.options.description=Дополнительные параметры указаны как JSON. Ознакомьтесь с документацией Chart.js о доступных параметрах конфигурации.
-rendering.macro.chartjs.placeholder=Источник диаграммы
 
 rendering.macro.tableToChartJS.name=Таблица для ChartJS
 rendering.macro.tableToChartJS.description=Рисует диаграмму, используя ChartJS и данные, считанные из таблицы.
@@ -58,6 +57,14 @@ rendering.macro.tableToChartJS.parameter.table.description=Определяет 
 rendering.macro.tableToChartJS.parameter.multipleDataSets.name=Несколько наборов данных
 rendering.macro.tableToChartJS.parameter.multipleDataSets.description=Содержит ли указанная таблица несколько наборов данных.
 rendering.macro.tableToChartJS.parameter.dataSetLabel.name=Метка набора данных
-rendering.macro.tableToChartJS.parameter.dataSetLabel.description=Индекс столбца таблицы, который представляет метку набора данных.</content>
-  
+rendering.macro.tableToChartJS.parameter.dataSetLabel.description=Индекс столбца таблицы, который представляет метку набора данных.
+
+## Used to indicate where deprecated keys start
+#@deprecatedstart
+
+## Deprecated since 1.7
+rendering.macro.chartjs.placeholder=Источник диаграммы
+
+## Used to indicate where deprecated keys end
+#@deprecatedend</content>
 </xwikidoc>

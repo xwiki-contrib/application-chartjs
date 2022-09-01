@@ -224,16 +224,6 @@ $body
 
 
 </content>
-  <attachment>
-    <filename>chartjs-logo.svg</filename>
-    <mimetype>image/svg+xml</mimetype>
-    <author>xwiki:XWiki.Admin</author>
-    <date>1549471274000</date>
-    <version>1.1</version>
-    <comment/>
-    <content>PHN2ZyB3aWR0aD0iMTYwIiBoZWlnaHQ9IjE2MCIgdmlld0JveD0iMCAwIDE2MCAxNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHRpdGxlPkFydGJvYXJkIDY8L3RpdGxlPjxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+PHBhdGggZD0iTTE0NC4wODYgODAuNTY4Yy0yMS45NzguNDMtMTcuNDAyIDE0LjM0Ni0zMi44OSAxNy44NjZDOTUuNDYgMTAyLjAxIDkyLjk3NSA2MCA3Ny4yNDMgNjBjLTE1LjczMyAwLTE5LjIxNiA0MC44MDYtMzguOTE4IDY4LjgyM2wtLjU2Ljc5NEw4MCAxNTRsNjQuMDg2LTM3VjgwLjU2OHoiIGZpbGw9IiMzNkEyRUIiLz48cGF0aCBkPSJNMTQ0LjA4NiA3OS4zQzEzNi43MjYgNjkuODU2IDEzMS43MzYgNTkgMTIxIDU5Yy0xOSAwLTE0IDMxLTM1IDMxcy0yMy4yMDctMzMuMzQ2LTQ3LTJjLTcuNTggOS45ODgtMTMuNjgyIDIxLjEyNC0xOC40NzUgMzEuNjYyTDgwIDE1NGw2NC4wODYtMzdWNzkuM3oiIGZpbGw9IiNGRkNFNTYiLz48cGF0aCBkPSJNMTUuOTE0IDkyLjE0M0MyMy4xMjQgNzIuMTczIDI2LjIzNyA1NiA0MCA1NmMyMSAwIDI2IDU5IDQ0IDUzczE2LTM4IDQ0LTM4YzUuMzMgMCAxMC43NzIgMy4yNjMgMTYuMDg2IDguNTQ2VjExN0w4MCAxNTRsLTY0LjA4Ni0zN1Y5Mi4xNDN6IiBmaWxsLW9wYWNpdHk9Ii44IiBmaWxsPSIjRkU2MTg0Ii8+PHBhdGggc3Ryb2tlPSIjRTdFOUVEIiBzdHJva2Utd2lkdGg9IjgiIGQ9Ik04MCA2bDY0LjA4NiAzN3Y3NEw4MCAxNTRsLTY0LjA4Ni0zN1Y0M3oiLz48L2c+PC9zdmc+</content>
-    <filesize>783</filesize>
-  </attachment>
   <object>
     <name>XWiki.ChartJS.WebHome</name>
     <number>0</number>
@@ -878,8 +868,20 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
     }
   };
 
-  $('canvas.chart').each(function() {
-    maybeDelayPageReady(createChart($(this)), 'chart.js');
+  var init = function(root) {
+    root.find('canvas.chart').each(function() {
+      maybeDelayPageReady(createChart($(this)), 'chart.js');
+    });
+  }
+
+  // Init the whole document once.
+  init($(document));
+
+  // Re-init updated sub-parts of the document.
+  $(document).on('xwiki:dom:updated', function(event, data) {
+    // Limit the init to the updated content only.
+    var container = $((data &amp;&amp; data.elements) || document);
+    init(container);
   });
 });</code>
     </property>
@@ -1178,37 +1180,30 @@ require(['jquery', 'chart', 'datalabels', 'palette'], function($, Chart, datalab
     </property>
     <property>
       <code>{{velocity}}
-#if ("$xcontext.action" != 'edit')
-  {{html clean="false"}}
-  #set ($discard = $xwiki.ssx.use($xcontext.macro.doc))
-  #set ($discard = $xwiki.jsx.use($xcontext.macro.doc))
-  #set ($cssClass = "$!escapetool.xml($xcontext.macro.params.cssClass)")
-  #set ($id = "$!escapetool.xml($xcontext.macro.params.id)")
-  #set ($title = "$!escapetool.xml($xcontext.macro.params.title)")
-  #set ($cssClasses = 'chart-container')
-  #if ($cssClass != '')
-    #set ($cssClasses = "$cssClasses $cssClass")
-  #end
-  &lt;div class="$cssClasses"&gt;
-    &lt;canvas
-      #if($id != '')id="$id"#end
-      #if($title != '')aria-label="$title"#end
-      class="chart"
-      data-type="$!escapetool.xml($xcontext.macro.params.type)"
-      data-options="$!escapetool.xml($xcontext.macro.params.options)"
-      data-source="$!escapetool.xml($xcontext.macro.content)"
-      width="$!escapetool.xml($xcontext.macro.params.width)"
-      height="$!escapetool.xml($xcontext.macro.params.height)"
-      role="img"&gt;
-    &lt;/canvas&gt;
-  &lt;/div&gt;
-  {{/html}}
-#else
-  (% style="text-align: center" %)
-  [[image:XWiki.ChartJS.WebHome@chartjs-logo.svg]]
-  (% style="text-align: center; padding-top: 0.5em; color: #aaa" %)
-  $services.localization.render('rendering.macro.chartjs.placeholder')
+{{html clean="false"}}
+#set ($discard = $xwiki.ssx.use($xcontext.macro.doc))
+#set ($discard = $xwiki.jsx.use($xcontext.macro.doc, {'wysiwyg': true}))
+#set ($cssClass = "$!escapetool.xml($xcontext.macro.params.cssClass)")
+#set ($id = "$!escapetool.xml($xcontext.macro.params.id)")
+#set ($title = "$!escapetool.xml($xcontext.macro.params.title)")
+#set ($cssClasses = 'chart-container')
+#if ($cssClass != '')
+  #set ($cssClasses = "$cssClasses $cssClass")
 #end
+&lt;div class="$cssClasses"&gt;
+  &lt;canvas
+    #if($id != '')id="$id"#end
+    #if($title != '')aria-label="$title"#end
+    class="chart"
+    data-type="$!escapetool.xml($xcontext.macro.params.type)"
+    data-options="$!escapetool.xml($xcontext.macro.params.options)"
+    data-source="$!escapetool.xml($xcontext.macro.content)"
+    width="$!escapetool.xml($xcontext.macro.params.width)"
+    height="$!escapetool.xml($xcontext.macro.params.height)"
+    role="img"&gt;
+  &lt;/canvas&gt;
+&lt;/div&gt;
+{{/html}}
 {{/velocity}}</code>
     </property>
     <property>

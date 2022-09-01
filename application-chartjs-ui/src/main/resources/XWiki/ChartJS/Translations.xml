@@ -45,7 +45,6 @@ rendering.macro.chartjs.parameter.type.name=Type
 rendering.macro.chartjs.parameter.type.description=The type of chart. Choose from: line, bar, radar, pie, doughnut, polarArea, bubble, scatter.
 rendering.macro.chartjs.parameter.options.name=Options
 rendering.macro.chartjs.parameter.options.description=Advanced options specified as JSON. Checkout the Chart.js documentation for the available configuration options.
-rendering.macro.chartjs.placeholder=Chart placeholder
 
 rendering.macro.tableToChartJS.name=Table to ChartJS
 rendering.macro.tableToChartJS.description=Draws a chart using ChartJS and the data read from a table.
@@ -58,7 +57,16 @@ rendering.macro.tableToChartJS.parameter.table.description=Identifies the source
 rendering.macro.tableToChartJS.parameter.multipleDataSets.name=Multiple Data Sets
 rendering.macro.tableToChartJS.parameter.multipleDataSets.description=Whether the specified table includes multiple data sets.
 rendering.macro.tableToChartJS.parameter.dataSetLabel.name=Data Set Label
-rendering.macro.tableToChartJS.parameter.dataSetLabel.description=The index of the table column that represents the data set label.</content>
+rendering.macro.tableToChartJS.parameter.dataSetLabel.description=The index of the table column that represents the data set label.
+
+## Used to indicate where deprecated keys start
+#@deprecatedstart
+
+## Deprecated since 1.7
+rendering.macro.chartjs.placeholder=Chart placeholder
+
+## Used to indicate where deprecated keys end
+#@deprecatedend</content>
   <object>
     <name>XWiki.ChartJS.Translations</name>
     <number>0</number>
