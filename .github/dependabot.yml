@@ -1,11 +1,48 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
-
+# ---------------------------------------------------------------------------
+# See the NOTICE file distributed with this work for additional
+# information regarding copyright ownership.
+#
+# This is free software; you can redistribute it and/or modify it
+# under the terms of the GNU Lesser General Public License as
+# published by the Free Software Foundation; either version 2.1 of
+# the License, or (at your option) any later version.
+#
+# This software is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this software; if not, write to the Free
+# Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+# 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+# ---------------------------------------------------------------------------
 version: 2
+registries:
+  # Hep find updates for non Maven Central dependencies
+  maven-xwiki-public:
+    type: maven-repository
+    url: https://nexus.xwiki.org/nexus/content/groups/public/
+    username: "void"
+    password: "void"
+  # Required to resolve xwiki-common SNAPSHOT parent pom
+  maven-xwiki-snapshots:
+    type: maven-repository
+    url: https://maven.xwiki.org/snapshots
+    username: "void"
+    password: "void"
 updates:
   - package-ecosystem: "maven"
     directory: "/"
+    registries:
+      - maven-xwiki-public
+      - maven-xwiki-snapshots
     schedule:
       interval: "weekly"
+    allow:
+      - dependency-type: "all"
+    ignore:
+      # Ignore XWiki dependencies since we always keep them up to date and Dependabot has problems with maven properties
+      # defined in parent poms.
+      - dependency-name: "org.xwiki.*"
+    open-pull-requests-limit: 15
