@@ -31,6 +31,7 @@
   <description>Create various types of charts using chart.js</description>
   <properties>
     <xwiki.extension.name>Chart.js Integration</xwiki.extension.name>
+    <xwiki.extension.category>macro</xwiki.extension.category>
   </properties>
   <dependencies>
     <!-- Rendering Macros -->
