@@ -39,6 +39,12 @@
     <developer>
       <id>slauriere</id>
     </developer>
+    <developer>
+      <id>mleduc</id>
+      <name>Manuel Leduc</name>
+      <organization>XWiki SAS</organization>
+      <organizationUrl>https://www.xwiki.com/</organizationUrl>
+    </developer>
   </developers>
   <scm>
     <connection>scm:git:git://github.com/xwiki-contrib/application-chartjs.git</connection>
