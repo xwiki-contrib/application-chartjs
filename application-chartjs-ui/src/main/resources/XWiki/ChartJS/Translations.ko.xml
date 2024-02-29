@@ -1,0 +1,70 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<!--
+ * See the NOTICE file distributed with this work for additional
+ * information regarding copyright ownership.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+-->
+
+<xwikidoc version="1.3" reference="XWiki.ChartJS.Translations" locale="ko">
+  <web>XWiki.ChartJS</web>
+  <name>Translations</name>
+  <language>ko</language>
+  <defaultLanguage>en</defaultLanguage>
+  <translation>1</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <creationDate>1501508609000</creationDate>
+  <parent>Main.WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <date>1501586886000</date>
+  <contentUpdateDate>1501586886000</contentUpdateDate>
+  <version>1.1</version>
+  <title/>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>plain/1.0</syntaxId>
+  <hidden>true</hidden>
+  <content>rendering.macro.chartjs.name=차트JS
+rendering.macro.chartjs.description=캔버스 요소를 사용하는 간단한 HTML5 차트.
+rendering.macro.chartjs.parameter.type.name=유형
+rendering.macro.chartjs.parameter.type.description=차트의 유형입니다. 라인, 바, 레이더, 파이, 도넛, PolarArea, 버블, 분산 중에서 선택하세요.
+rendering.macro.chartjs.parameter.options.name=옵션
+rendering.macro.chartjs.parameter.options.description=JSON으로 지정된 고급 옵션입니다. 사용 가능한 구성 옵션은 Chart.js 문서를 확인하세요.
+rendering.macro.tableToChartJS.name=표를 ChartJS로
+rendering.macro.tableToChartJS.description=ChartJS와 테이블에서 읽은 데이터를 사용하여 차트를 그립니다.
+rendering.macro.tableToChartJS.parameter.type.name=유형
+rendering.macro.tableToChartJS.parameter.type.description=차트의 유형입니다. 라인, 바, 레이더, 파이, 도넛, PolarArea, 버블, 분산 중에서 선택하세요.
+rendering.macro.tableToChartJS.parameter.options.name=옵션
+rendering.macro.tableToChartJS.parameter.options.description=JSON으로 지정된 고급 차트 옵션입니다. 사용 가능한 구성 옵션은 Chart.js 문서를 확인하세요.
+rendering.macro.tableToChartJS.parameter.table.name=테이블
+rendering.macro.tableToChartJS.parameter.table.description=소스 테이블을 식별합니다.
+rendering.macro.tableToChartJS.parameter.multipleDataSets.name=다중 데이터 세트
+rendering.macro.tableToChartJS.parameter.multipleDataSets.description=지정된 테이블에 여러 데이터 세트가 포함되어 있는지 여부입니다.
+rendering.macro.tableToChartJS.parameter.dataSetLabel.name=데이터 세트 라벨
+rendering.macro.tableToChartJS.parameter.dataSetLabel.description=데이터 세트 레이블을 나타내는 테이블 열의 인덱스입니다.
+
+## Used to indicate where deprecated keys start
+#@deprecatedstart
+
+## Deprecated since 1.7
+rendering.macro.chartjs.placeholder=차트 자리표시자
+
+## Used to indicate where deprecated keys end
+#@deprecatedend
+</content>
+  </xwikidoc>
