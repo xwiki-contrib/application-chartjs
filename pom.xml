@@ -56,7 +56,7 @@
     <xwiki.release.jira.skip>false</xwiki.release.jira.skip>
     <xwiki.issueManagement.jira.id>CHARTJS</xwiki.issueManagement.jira.id>
 
-    <chart.js.version>2.8.0</chart.js.version>
+    <chart.js.version>26962ce-1</chart.js.version>
     <chartjs-plugin-datalabels.version>0.4.0</chartjs-plugin-datalabels.version>
   </properties>
   <modules>
