@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.1" encoding="UTF-8"?>
 
 <!--
  * See the NOTICE file distributed with this work for additional
@@ -40,31 +40,31 @@
   <syntaxId>plain/1.0</syntaxId>
   <hidden>true</hidden>
   <content>### Missing: rendering.macro.chartjs.name=ChartJS
-### Missing: rendering.macro.chartjs.description=Simple HTML5 charts using the canvas element.
+rendering.macro.chartjs.description=Proste wykresy HTML5 wykorzystujące element canvas.
 rendering.macro.chartjs.parameter.type.name=Typ
-### Missing: rendering.macro.chartjs.parameter.type.description=The type of chart. Choose from: line, bar, radar, pie, doughnut, polarArea, bubble, scatter.
+rendering.macro.chartjs.parameter.type.description=Typ wykresu. Do wyboru: liniowy, słupkowy, radarowy, kołowy, pączkowy, polarArea, bąbelkowy, rozproszony.
 rendering.macro.chartjs.parameter.options.name=Opcje
-### Missing: rendering.macro.chartjs.parameter.options.description=Advanced options specified as JSON. Checkout the Chart.js documentation for the available configuration options.
-
-### Missing: rendering.macro.tableToChartJS.name=Table to ChartJS
-### Missing: rendering.macro.tableToChartJS.description=Draws a chart using ChartJS and the data read from a table.
+rendering.macro.chartjs.parameter.options.description=Opcje zaawansowane określone jako JSON. Sprawdź dokumentację Chart.js, aby zapoznać się z dostępnymi opcjami konfiguracji.
+rendering.macro.tableToChartJS.name=Tabela do ChartJS
+rendering.macro.tableToChartJS.description=Rysuje wykres przy użyciu ChartJS i danych odczytanych z tabeli.
 rendering.macro.tableToChartJS.parameter.type.name=Typ
-### Missing: rendering.macro.tableToChartJS.parameter.type.description=The type of chart. Choose from: line, bar, radar, pie, doughnut, polarArea, bubble, scatter.
+rendering.macro.tableToChartJS.parameter.type.description=Typ wykresu. Do wyboru: liniowy, słupkowy, radarowy, kołowy, pączkowy, polarArea, bąbelkowy, rozproszony.
 rendering.macro.tableToChartJS.parameter.options.name=Opcje
-### Missing: rendering.macro.tableToChartJS.parameter.options.description=Advanced chart options specified as JSON. Checkout the Chart.js documentation for the available configuration options.
+rendering.macro.tableToChartJS.parameter.options.description=Zaawansowane opcje wykresu określone jako JSON. Sprawdź dokumentację Chart.js, aby zapoznać się z dostępnymi opcjami konfiguracji.
 rendering.macro.tableToChartJS.parameter.table.name=Tablica
-### Missing: rendering.macro.tableToChartJS.parameter.table.description=Identifies the source table.
-### Missing: rendering.macro.tableToChartJS.parameter.multipleDataSets.name=Multiple Data Sets
-### Missing: rendering.macro.tableToChartJS.parameter.multipleDataSets.description=Whether the specified table includes multiple data sets.
-### Missing: rendering.macro.tableToChartJS.parameter.dataSetLabel.name=Data Set Label
-### Missing: rendering.macro.tableToChartJS.parameter.dataSetLabel.description=The index of the table column that represents the data set label.
+rendering.macro.tableToChartJS.parameter.table.description=Identyfikuje tabelę źródłową.
+rendering.macro.tableToChartJS.parameter.multipleDataSets.name=Wiele zestawów danych
+rendering.macro.tableToChartJS.parameter.multipleDataSets.description=Czy określona tabela zawiera wiele zestawów danych.
+rendering.macro.tableToChartJS.parameter.dataSetLabel.name=Etykieta zestawu danych
+rendering.macro.tableToChartJS.parameter.dataSetLabel.description=Indeks kolumny tabeli reprezentującej etykietę zestawu danych.
 
 ## Used to indicate where deprecated keys start
 #@deprecatedstart
 
 ## Deprecated since 1.7
-### Missing: rendering.macro.chartjs.placeholder=Chart placeholder
+rendering.macro.chartjs.placeholder=Symbol zastępczy wykresu
 
 ## Used to indicate where deprecated keys end
-#@deprecatedend</content>
+#@deprecatedend
+</content>
 </xwikidoc>
