@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.xwiki.contrib</groupId>
     <artifactId>application-chartjs</artifactId>
-    <version>1.6.4-SNAPSHOT</version>
+    <version>1.6.5-SNAPSHOT</version>
   </parent>
   <artifactId>application-chartjs-webjar</artifactId>
   <name>Chart.js Integration - WebJar</name>
@@ -48,7 +48,7 @@
       <plugin>
         <groupId>com.googlecode.maven-download-plugin</groupId>
         <artifactId>download-maven-plugin</artifactId>
-        <version>1.7.1</version>
+        <version>1.13.0</version>
         <executions>
           <!-- Download the palette.js source for the version (tag) we want to use. -->
           <execution>
