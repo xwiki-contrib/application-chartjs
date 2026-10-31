@@ -39,30 +39,30 @@
   <minorEdit>false</minorEdit>
   <syntaxId>plain/1.0</syntaxId>
   <hidden>true</hidden>
-  <content>### Missing: rendering.macro.chartjs.name=
-### Missing: rendering.macro.chartjs.description=
-### Missing: rendering.macro.chartjs.parameter.type.name=
-### Missing: rendering.macro.chartjs.parameter.type.description=
-### Missing: rendering.macro.chartjs.parameter.options.name=
-### Missing: rendering.macro.chartjs.parameter.options.description=
-### Missing: rendering.macro.tableToChartJS.name=
-### Missing: rendering.macro.tableToChartJS.description=
-### Missing: rendering.macro.tableToChartJS.parameter.type.name=
-### Missing: rendering.macro.tableToChartJS.parameter.type.description=
-### Missing: rendering.macro.tableToChartJS.parameter.options.name=
-### Missing: rendering.macro.tableToChartJS.parameter.options.description=
-### Missing: rendering.macro.tableToChartJS.parameter.table.name=
-### Missing: rendering.macro.tableToChartJS.parameter.table.description=
-### Missing: rendering.macro.tableToChartJS.parameter.multipleDataSets.name=
-### Missing: rendering.macro.tableToChartJS.parameter.multipleDataSets.description=
-### Missing: rendering.macro.tableToChartJS.parameter.dataSetLabel.name=
-### Missing: rendering.macro.tableToChartJS.parameter.dataSetLabel.description=
+  <content>rendering.macro.chartjs.name=ChartJS
+rendering.macro.chartjs.description=Enkle HTML5-diagrammer, der bruger canvas-elementet.
+rendering.macro.chartjs.parameter.type.name=Type
+rendering.macro.chartjs.parameter.type.description=Diagramtypen. Vælg mellem: line, bar, radar, pie, doughnut, polarArea, bubble, scatter.
+rendering.macro.chartjs.parameter.options.name=Indstillinger
+rendering.macro.chartjs.parameter.options.description=Avancerede indstillinger angivet som JSON. Se Chart.js-dokumentationen for de mulige indstillinger.
+rendering.macro.tableToChartJS.name=Tabel til ChartJS
+rendering.macro.tableToChartJS.description=Tegner et diagram med ChartJS ud fra data, der læses fra en tabel.
+rendering.macro.tableToChartJS.parameter.type.name=Type
+rendering.macro.tableToChartJS.parameter.type.description=Diagramtypen. Vælg mellem: line, bar, radar, pie, doughnut, polarArea, bubble, scatter.
+rendering.macro.tableToChartJS.parameter.options.name=Indstillinger
+rendering.macro.tableToChartJS.parameter.options.description=Avancerede diagramindstillinger angivet som JSON. Se Chart.js-dokumentationen for de mulige indstillinger.
+rendering.macro.tableToChartJS.parameter.table.name=Tabel
+rendering.macro.tableToChartJS.parameter.table.description=Angiver kildetabellen.
+rendering.macro.tableToChartJS.parameter.multipleDataSets.name=Flere dataserier
+rendering.macro.tableToChartJS.parameter.multipleDataSets.description=Om den angivne tabel indeholder flere dataserier.
+rendering.macro.tableToChartJS.parameter.dataSetLabel.name=Etiket for dataserie
+rendering.macro.tableToChartJS.parameter.dataSetLabel.description=Indekset for den tabelkolonne, der indeholder dataseriens etiket.
 
 ## Used to indicate where deprecated keys start
 #@deprecatedstart
 
 ## Deprecated since 1.7
-### Missing: rendering.macro.chartjs.placeholder=
+rendering.macro.chartjs.placeholder=Pladsholder for diagram
 
 ## Used to indicate where deprecated keys end
 #@deprecatedend
